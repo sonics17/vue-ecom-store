@@ -1,0 +1,22 @@
+@import '../../shared/styles/reset.css';
+@import '../../shared/styles/variables.css';
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url(../../shared/assets/fonts/Montserrat-VariableFont_wght.woff2);
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Montserrat';
+  font-size: var(--font-size-md);
+  color: var(--color-primary);
+  background-color: var(--color-white);
+  line-height: 1.2;
+}

@@ -1,0 +1,31 @@
+.typography--primary {color: var(--color-primary);}
+.typography--secondary {color: var(--color-secondary);}
+.typography--white {color: var(--color-white);}
+
+.typography--regular {font-weight: var(--font-weight-regular);}
+.typography--medium {font-weight: var(--font-weight-medium);}
+.typography--bold {font-weight: var(--font-weight-bold);}
+.typography--extra-bold {font-weight: var(--font-weight-extra-bold);}
+
+.typography--xs {font-size: var(--font-size-xs);}
+.typography--sm {font-size: var(--font-size-sm);}
+.typography--md {font-size: var(--font-size-md);}
+.typography--lg {font-size: var(--font-size-lg);}
+.typography--xl {font-size: var(--font-size-xl);}
+.typography--2xl {font-size: var(--font-size-2xl);}
+.typography--3xl {font-size: var(--font-size-3xl);}
+
+.typography--with-line {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.typography--with-line::before {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 1.2em;
+  background-color: var(--color-purple);
+  border-radius: 10px;
+  flex-shrink: 0;
+}

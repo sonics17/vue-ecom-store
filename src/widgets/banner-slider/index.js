@@ -1,0 +1,1 @@
+export { default as BannerSlider } from './ui/BannerSlider.vue'; 
