@@ -1,10 +1,10 @@
 <script setup>
 import { Typography } from '@/shared/ui/base/Typography';
-import { onMounted } from 'vue';
+import ArrowIcon from '@/shared/ui/icons/ArrowIcon.vue';
 
 defineProps({
   name: String,
-  image_url: String,
+  imageUrl: String,
   slug: String,
   parentSlug: String
 })
@@ -16,14 +16,12 @@ defineProps({
     :to="{name: 'catalog', params:{rootCategory: parentSlug, subCategory: slug}}"
   >
     <div class="category-card__image">
-      <img :src="image_url" :alt="`${name} photo`">
+      <img :src="imageUrl" :alt="`${name} photo`">
     </div>
     <Typography class="category-card__name" tag="span" weight="bold">{{ name }}</Typography>
     <Typography class="category-card__text" tag="span" color="secondary" size="xs" weight="medium">Explore Now!</Typography>
     <span class="category-card__arrow">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-        <path d="M15 8L19 12M19 12L15 16M19 12H5" stroke="var(--color-secondary)" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+      <ArrowIcon />
     </span>
   </RouterLink>
 </template>
@@ -62,6 +60,8 @@ defineProps({
 .category-card__arrow {
   grid-area: arrow;
   align-self: center;
+  display: flex;
+  align-items: center;
 }
 .category-card__arrow svg {
   transition: all 0.3s ease-out;
