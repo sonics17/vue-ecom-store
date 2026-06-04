@@ -42,7 +42,7 @@ const categoryStore = useCategoryStore();
 <style scoped>
 .header {
   padding: 20px 0;
-  border-bottom: 1px solid var(--color-light-gray);
+  border-bottom: 1px solid var(--color-secondary)
 }
 
 .header__container {
