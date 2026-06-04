@@ -5,14 +5,14 @@ import { PromoBanner, PromoSection } from '@/shared/ui/promo';
 import { BannerSlider } from '@/widgets/banner-slider';
 import { CategoriesSection } from '@/widgets/categories-section';
 import { homePageCategoriesSections } from '../model/homePageCategoriesSections';
-import { buildCategoriesSections } from '../model/buildCategoriesSections';
+import { buildHomeCategoriesSections } from '../model/buildHomeCategoriesSections';
 import { computed } from 'vue';
 import { ReviewsSection } from '@/widgets/reviews-section';
 
 const categoryStore = useCategoryStore();
 
 const categoriesSections = computed(() => {
-  return buildCategoriesSections(homePageCategoriesSections, categoryStore.allCategories)
+  return buildHomeCategoriesSections(homePageCategoriesSections, categoryStore.allCategories)
 })
 
 </script>
@@ -22,10 +22,11 @@ const categoriesSections = computed(() => {
     <PromoSection class="promo-section"></PromoSection>
     <PromoBanner class="promo-banner"></PromoBanner>
     <CategoriesSection
-      v-for="(categorySection, index) in categoriesSections"
+      v-for="categorySection in categoriesSections"
       :title="categorySection.title"
       :items="categorySection.items"
-      :key="index"
+      :key="categorySection.slug"
+      :root-slug="categorySection.slug"
       class="categories-section"
     ></CategoriesSection>
     <ReviewsSection class="reviews-section"></ReviewsSection>
