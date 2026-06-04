@@ -52,6 +52,7 @@ const props = defineProps({
   background-color: transparent;
   border-color: var(--color-purple);
   color: var(--color-purple);
+  font-weight: var(--font-weight-medium);
 }
 
 .app-button--icon {
