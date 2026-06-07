@@ -15,8 +15,19 @@ const route = useRoute();
 
 <template>
   <section class="category-section">
+
+    <div class="category-section__header">
     
-    <Typography has-line tag="h3" size="xl" weight="bold" class="category-section__title">{{ title }}</Typography>
+      <Typography has-line tag="h3" size="xl" weight="bold" class="category-section__title">{{ title }}</Typography>
+
+      <RouterLink :to="{name: 'catalog', params: {rootCategory: rootSlug}}" class="category-section__link">
+        <Typography weight="bold" size="lg" class="category-section__link-text">
+          {{ `Shop ${props.rootSlug}` }}
+        </Typography>
+        <ArrowIcon class="arrow-icon" />
+      </RouterLink>
+
+    </div>
 
     <div class="category-section__items">
       <CategoryCard
@@ -29,18 +40,19 @@ const route = useRoute();
       >
       </CategoryCard>
     </div>
-    <RouterLink  v-if="route.name === 'home'" :to="{name: 'catalog', params: {rootCategory: rootSlug}}" class="category-section__link">
-      <Typography weight="bold" size="lg" class="category-section__link-text">
-        {{ `Shop ${props.rootSlug}` }}
-      </Typography>
-      <ArrowIcon class="arrow-icon" />
-    </RouterLink>
   </section>
 </template>
 
 <style scoped>
-.category-section__title {
+.category-section__header {
   margin-bottom: 60px;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.category-section__title {
+  flex: 1;
 }
 .category-section__items {
   display: grid;
@@ -51,10 +63,9 @@ const route = useRoute();
 .category-section__link {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: start;
   gap: 10px;
   text-transform: capitalize;
-  margin-top: 40px;
 }
 
 .arrow-icon {
@@ -69,4 +80,5 @@ const route = useRoute();
     text-decoration: underline;
   }
 }
+
 </style>
