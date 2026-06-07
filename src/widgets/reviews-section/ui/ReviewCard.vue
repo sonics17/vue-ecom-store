@@ -1,5 +1,5 @@
 <script setup>
-import { Typography } from '@/shared/ui/base/Typography';
+import { Typography } from '@/shared/ui/base/typography/index.js';
 import StarRating from './StarRating.vue';
 
 defineProps({

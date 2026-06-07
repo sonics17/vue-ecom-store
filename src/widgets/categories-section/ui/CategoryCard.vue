@@ -1,5 +1,5 @@
 <script setup>
-import { Typography } from '@/shared/ui/base/Typography';
+import { Typography } from '@/shared/ui/base/typography';
 import ArrowIcon from '@/shared/ui/icons/ArrowIcon.vue';
 
 defineProps({

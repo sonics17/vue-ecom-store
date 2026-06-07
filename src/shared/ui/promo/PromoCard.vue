@@ -1,5 +1,5 @@
 <script setup>
-import { Typography } from '../base/Typography';
+import { Typography } from '../base/typography';
 
 defineProps({
   title: String,

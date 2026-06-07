@@ -1,5 +1,5 @@
 <script setup>
-import { Typography } from '@/shared/ui/base/Typography';
+import { Typography } from '@/shared/ui/base/typography/index.js';
 import CategoryCard from './CategoryCard.vue';
 import ArrowIcon from '@/shared/ui/icons/ArrowIcon.vue';
 import { useRoute } from 'vue-router';

@@ -1,8 +1,8 @@
 <script setup>
 import promoBanner1 from '@/shared/assets/images/banners/promo-banner-1.webp';
 import promoBanner2 from '@/shared/assets/images/banners/promo-banner-2.webp';
-import { Typography } from '../base/Typography';
-import { AppButton } from '../base/AppButton';
+import { Typography } from '../base/typography';
+import { AppButton } from '../base/app-button';
 </script>
 
 <template>

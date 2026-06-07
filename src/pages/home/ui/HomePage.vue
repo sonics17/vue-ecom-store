@@ -1,6 +1,6 @@
 <script setup>
 import { useCategoryStore } from '@/entities/category/model/store';
-import { AppContainer } from '@/shared/ui/base/AppContainer';
+import { AppContainer } from '@/shared/ui/base/app-container';
 import { PromoBanner, PromoSection } from '@/shared/ui/promo';
 import { BannerSlider } from '@/widgets/banner-slider';
 import { CategoriesSection } from '@/widgets/categories-section';
@@ -40,7 +40,7 @@ const categoriesSections = computed(() => {
   margin-top: 73px;
 }
 .categories-section {
-  margin-top: 103px;
+  margin-top: 80px;
 }
 .reviews-section {
   margin-top: 103px;

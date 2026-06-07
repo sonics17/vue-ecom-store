@@ -1,7 +1,7 @@
 <script setup>
 import { useCategoryStore } from '@/entities/category/model/store';
-import { AppContainer } from '@/shared/ui/base/AppContainer';
-import { computed, onMounted } from 'vue';
+import { AppContainer } from '@/shared/ui/base/app-container';
+import { computed } from 'vue';
 import { buildCatalogCategoriesSections } from '../model/buildCatalogCategoriesSections';
 import { CategoriesSection } from '@/widgets/categories-section';
 import { useRoute } from 'vue-router';
@@ -39,7 +39,10 @@ const route = useRoute();
 .catalog-container {
   margin-top: 30px;
 }
+.categories-section:first-child {
+  margin-top: 50px;
+}
 .categories-section:not(:first-child) {
-  margin-top: 103px;
+  margin-top: 80px;
 }
 </style>

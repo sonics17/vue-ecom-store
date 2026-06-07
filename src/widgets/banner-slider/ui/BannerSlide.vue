@@ -1,6 +1,6 @@
 <script setup>
-import { AppButton } from '@/shared/ui/base/AppButton';
-import { Typography } from '@/shared/ui/base/Typography';
+import { AppButton } from '@/shared/ui/base/app-button';
+import { Typography } from '@/shared/ui/base/typography';
 
 defineProps({
   title: String,
