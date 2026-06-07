@@ -6,7 +6,18 @@ export const useCategoryStore = defineStore('categoryStore', () => {
   const allCategories = ref([]);
   const isLoading = ref(false);
 
-  const rootCategories = computed(() => allCategories.value.filter(c => c.parent_id === null));
+  const rootCategories = computed(() => {
+    return allCategories.value
+      .filter(category => category.parent_id === null)
+      .map(rootCategory => {
+        return {
+          ...rootCategory,
+          subCategories: allCategories.value.filter(category => category.parent_id === rootCategory.id)
+        }
+      })
+  })
+
+
 
   const fetchCategories = async () => {
     if (allCategories.value.length > 0) return;
