@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from "vue";
 import { useBreakpoints } from "@/shared/lib/composables/useBreakpoints";
 import HeaderDesktop from "./desktop/HeaderDesktop.vue";
 import HeaderMobile from "./mobile/HeaderMobile.vue";
