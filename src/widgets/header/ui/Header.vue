@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from "vue";
+import { useBreakpoints } from "@/shared/lib/composables/useBreakpoints";
 import HeaderDesktop from "./desktop/HeaderDesktop.vue";
 import HeaderMobile from "./mobile/HeaderMobile.vue";
 
-const isMobile = ref(false);
+const { isMobile } = useBreakpoints()
 </script>
 
 <template>
