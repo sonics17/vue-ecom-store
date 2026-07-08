@@ -1,0 +1,6 @@
+@use "./variables.scss" as *;
+
+:export {
+  mobile: $breakpoint-mobile;
+  tablet: $breakpoint-tablet;
+}

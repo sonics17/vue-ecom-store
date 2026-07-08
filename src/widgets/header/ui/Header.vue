@@ -1,13 +1,13 @@
 <script setup>
-import { useBreakpoints } from "@/shared/lib/composables/useBreakpoints";
+import { useDeviceBreakpoints } from "@/shared/lib/composables/useDeviceBreakpoints.js";
 import HeaderDesktop from "./desktop/HeaderDesktop.vue";
 import HeaderMobile from "./mobile/HeaderMobile.vue";
 
-const { isMobile } = useBreakpoints()
+const { isDesktop } = useDeviceBreakpoints();
 </script>
 
 <template>
-  <HeaderMobile v-if="isMobile"></HeaderMobile>
+  <HeaderMobile v-if="!isDesktop"></HeaderMobile>
   <HeaderDesktop v-else></HeaderDesktop>
 </template>
 

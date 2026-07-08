@@ -6,9 +6,15 @@ export default [
     meta: { layout: 'MainLayout' },
   },
   {
-    path: '/catalog/:rootCategory?/:subCategory?/:subSubCategory?',
+    path: '/catalog/:rootCategory?/:subCategory?',
     name: 'catalog',
     component: () => import('@/pages/catalog'),
-    meta: {layout: 'MainLayout'},
+    meta: { layout: 'MainLayout' },
   },
+  {
+    path: '/product/:id',
+    name: 'product',
+    component: () => import('@/pages/product-details'),
+    meta: {layout: 'MainLayout' },
+  }
 ];

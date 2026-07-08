@@ -8,6 +8,9 @@ import { homePageCategoriesSections } from '../model/homePageCategoriesSections'
 import { buildHomeCategoriesSections } from '../model/buildHomeCategoriesSections';
 import { computed } from 'vue';
 import { ReviewsSection } from '@/widgets/reviews-section';
+import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints';
+
+const {isDesktop} = useDeviceBreakpoints();
 
 const categoryStore = useCategoryStore();
 
@@ -17,7 +20,7 @@ const categoriesSections = computed(() => {
 
 </script>
 <template>
-  <BannerSlider></BannerSlider>
+  <BannerSlider class="banner-slider" v-if="isDesktop"></BannerSlider>
   <AppContainer>
     <PromoSection class="promo-section"></PromoSection>
     <PromoBanner class="promo-banner"></PromoBanner>
@@ -32,17 +35,32 @@ const categoriesSections = computed(() => {
     <ReviewsSection class="reviews-section"></ReviewsSection>
   </AppContainer>
 </template>
-<style scoped>
+<style lang="scss" scoped>
+@use "@/shared/styles/_variables.scss" as *;
+
+.banner-slider {
+  margin-bottom: 73px;
+}
 .promo-section {
-  margin-top: 130px;
+  margin-top: 10px;
 }
 .promo-banner {
   margin-top: 73px;
+
+  @media (max-width: $breakpoint-tablet) {
+    margin-top: 40px;
+  }
 }
 .categories-section {
   margin-top: 80px;
+  @media (max-width: $breakpoint-tablet) {
+    margin-top: 40px;
+  }
 }
 .reviews-section {
   margin-top: 103px;
+  @media (max-width: $breakpoint-tablet) {
+    margin-top: 40px;
+  }
 }
 </style>

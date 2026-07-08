@@ -18,6 +18,33 @@ export const useCategoryStore = defineStore('categoryStore', () => {
   })
 
 
+  const getCategoryIdsBySlug = (rootCategorySlug, subCategorySlug = null) => {
+    const rootCategory = allCategories.value.find(category => category.parent_id === null && category.slug === rootCategorySlug);
+
+    if (!rootCategory) return []
+
+    if (!subCategorySlug) {
+      return allCategories.value
+        .filter(category => category.parent_id === rootCategory.id)
+        .map(category => category.id);
+    } 
+    
+    const subCategory = allCategories.value.find(category => category.parent_id === rootCategory.id && category.slug === subCategorySlug);
+    
+    return subCategory ? [subCategory.id] : []
+  }
+
+  const getCurrentCategoryIdBySlug = (rootCategorySlug, subCategorySlug = null) => {
+    const rootCategory = allCategories.value.find(category => category.parent_id === null && category.slug === rootCategorySlug);
+
+    if (!rootCategory) return null
+
+    if (!subCategorySlug) return rootCategory.id
+
+    const subCategory = allCategories.value.find(category => category.parent_id === rootCategory.id && category.slug === subCategorySlug);
+    
+    return subCategory ? subCategory.id : null
+  }
 
   const fetchCategories = async () => {
     if (allCategories.value.length > 0) return;
@@ -32,13 +59,12 @@ export const useCategoryStore = defineStore('categoryStore', () => {
       }
 
       allCategories.value = data;
-      console.log(allCategories.value)
     } catch (err) {
-      console.log('Error:', err.message)
+      console.error('Error:', err.message)
     } finally {
       isLoading.value = false
     }
   }
 
-  return {allCategories, rootCategories, isLoading, fetchCategories}
+  return {allCategories, rootCategories, isLoading, fetchCategories, getCategoryIdsBySlug, getCurrentCategoryIdBySlug}
 })

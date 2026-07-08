@@ -32,9 +32,15 @@ const modules = [Pagination];
   </section>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/shared/styles/_variables.scss" as *;
+
 .reviews-section__title {
   margin-bottom: 70px;
+  
+  @media(max-width: $breakpoint-tablet) {
+    margin-bottom: 30px;
+  }
 }
 :deep(.swiper-wrapper) {
   align-items: stretch;

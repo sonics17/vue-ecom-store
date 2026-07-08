@@ -5,9 +5,9 @@ import { SearchProducts } from "@/features/search-products";
 import logoUrl from "@/shared/assets/images/logo.svg";
 import { AppButton } from "@/shared/ui/base/app-button/index.js";
 import { AppContainer } from "@/shared/ui/base/app-container/index.js";
-import { Typography } from "@/shared/ui/base/typography/index.js";
 import { IconCart, IconUser, IconHeart } from "@/shared/ui/icons";
 import HeaderDropdown from "./HeaderDropdown.vue";
+import { CategoryLink } from "@/entities/category";
 
 const categoryStore = useCategoryStore();
 
@@ -17,8 +17,8 @@ const activeCategory = ref(null);
 <template>
   <header class="header">
     <AppContainer class="header__container">
-      <RouterLink to="/">
-        <img :src="logoUrl" alt="Logo" class="header__logo" />
+      <RouterLink to="/" class="header__logo">
+        <img :src="logoUrl" alt="Logo" />
       </RouterLink>
 
       <nav v-if="!categoryStore.isLoading" class="header__nav">
@@ -28,25 +28,29 @@ const activeCategory = ref(null);
           :key="category.id"
           @mouseenter="activeCategory = category.id"
           @mouseleave="activeCategory = null"
+          @click="activeCategory = null"
         >
-          <RouterLink
-            :to="{ name: 'catalog', params: { rootCategory: category.slug } }"
+
+          <CategoryLink
+            :root-slug="category.slug"
+            color="secondary"
             class="header__link"
             :class="{ 'header__link--active': activeCategory === category.id }"
           >
-            <Typography tag="span" color="secondary">{{
-              category.name
-            }}</Typography>
-          </RouterLink>
+            {{ category.name }}
+          </CategoryLink>
+          
 
           <Transition name="dropdown">
             <HeaderDropdown
               v-if="activeCategory === category.id"
+              class="dropdown"
               :sub-categories="category.subCategories"
               :parent-slug="category.slug"
               @close="activeCategory = null"
             ></HeaderDropdown>
           </Transition>
+
         </div>
       </nav>
 
@@ -64,8 +68,9 @@ const activeCategory = ref(null);
 <style scoped>
 .header {
   padding: 20px 0;
-  border-bottom: 1px solid var(--color-secondary);
+  border-bottom: 1px solid var(--color-medium-gray);
   position: relative;
+  background-color: var(--color-white);
 }
 
 .header__container {
@@ -87,7 +92,7 @@ const activeCategory = ref(null);
 
 .header__link {
   position: relative;
-  display: inline-block;
+  display: block;
   padding: 5px 0;
 }
 
@@ -108,26 +113,25 @@ const activeCategory = ref(null);
   transform: scaleX(1);
 }
 
-.dropdown-enter-from,
-.dropdown-leave-to {
-  opacity: 0;
-}
-
-.dropdown-enter-active {
-  transition: opacity 0.25s ease-out;
-}
-
-.dropdown-leave-active {
-  transition: opacity 0.15s ease-in;
-}
-
-.dropdown-enter-to,
-.dropdown-leave-from {
-  opacity: 1;
-}
-
 .header__actions {
   display: flex;
+  align-items: center;
   gap: 12px;
+}
+.dropdown {
+  z-index: 100;
+}
+
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transform: translateY(0);
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  z-index: -1;
+  opacity: 0;
+  transform: translateY(-15px);
 }
 </style>

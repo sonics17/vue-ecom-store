@@ -1,6 +1,6 @@
 <script setup>
+import { CategoryLink } from "@/entities/category";
 import { AppContainer } from "@/shared/ui/base/app-container";
-import { Typography } from "@/shared/ui/base/typography";
 
 defineProps({
   parentSlug: String,
@@ -17,15 +17,15 @@ defineProps({
           :key="subCategory.id"
           class="dropdown__item"
         >
-          <RouterLink
+          <CategoryLink
+            :root-slug="parentSlug"
+            :slug="subCategory.slug"
+            color="secondary"
             @click="$emit('close')"
-            :to="{ name: 'catalog', params: {rootCategory: parentSlug, subCategory: subCategory.slug}}"
             class="dropdown__link"
           >
-            <Typography tag="span" color="secondary">{{
-              subCategory.name
-            }}</Typography>
-          </RouterLink>
+            {{ subCategory.name }}
+          </CategoryLink>
         </li>
       </ul>
     </AppContainer>
@@ -42,7 +42,6 @@ defineProps({
   background-color: var(--color-light-gray);
   padding: 25px 0;
   border-radius: 5px;
-  z-index: 100;
 }
 
 .dropdown::before {

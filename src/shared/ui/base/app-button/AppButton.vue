@@ -21,7 +21,9 @@ const props = defineProps({
   </button>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/shared/styles/variables.scss" as *;
+
 .app-button {
   display: flex;
   align-items: center;
@@ -59,10 +61,19 @@ const props = defineProps({
   width: 44px;
   height: 44px;
   padding: 0;
+  
+  @media(max-width: $breakpoint-tablet) {
+    box-sizing: border-box;
+    padding: 7px;
+  }
 }
 
 .app-button--icon.app-button--gray {
   color: var(--color-secondary);
   background-color: var(--color-light-gray);
+
+  @media(max-width: $breakpoint-tablet) {
+    background-color: transparent;
+  }
 }
 </style>

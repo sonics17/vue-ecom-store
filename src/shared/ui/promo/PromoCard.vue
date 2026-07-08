@@ -37,6 +37,9 @@ defineProps({
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: right top;
+  min-width: 0;
+  min-height: 0;
 }
 .promo-card__content {
   grid-area: 1/1;

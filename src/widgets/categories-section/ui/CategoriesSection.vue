@@ -1,16 +1,13 @@
 <script setup>
 import { Typography } from '@/shared/ui/base/typography/index.js';
 import CategoryCard from './CategoryCard.vue';
-import ArrowIcon from '@/shared/ui/icons/ArrowIcon.vue';
-import { useRoute } from 'vue-router';
+import { IconArrow} from '@/shared/ui/icons';
 
-const props = defineProps({
+defineProps({
   title: String,
   items: Array,
   rootSlug: String
 })
-
-const route = useRoute();
 </script>
 
 <template>
@@ -21,12 +18,11 @@ const route = useRoute();
       <Typography has-line tag="h3" size="xl" weight="bold" class="category-section__title">{{ title }}</Typography>
 
       <RouterLink :to="{name: 'catalog', params: {rootCategory: rootSlug}}" class="category-section__link">
-        <Typography weight="bold" size="lg" class="category-section__link-text">
-          {{ `Shop ${props.rootSlug}` }}
+        <Typography tag="span" weight="bold" class="category-section__link-text">
+          {{ `Shop ${rootSlug}` }}
         </Typography>
-        <ArrowIcon class="arrow-icon" />
+        <IconArrow class="arrow-icon" />
       </RouterLink>
-
     </div>
 
     <div class="category-section__items">
@@ -43,20 +39,26 @@ const route = useRoute();
   </section>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/shared/styles/_variables.scss" as *;
+
 .category-section__header {
   margin-bottom: 60px;
   display: flex;
   align-items: flex-end;
   gap: 20px;
   flex-wrap: wrap;
+
+  @media (max-width: $breakpoint-tablet) {
+    margin-bottom: 30px;
+  }
 }
 .category-section__title {
-  flex: 1;
+  flex: 1 0 0;
 }
 .category-section__items {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 50px;
 }
 
@@ -80,5 +82,4 @@ const route = useRoute();
     text-decoration: underline;
   }
 }
-
 </style>

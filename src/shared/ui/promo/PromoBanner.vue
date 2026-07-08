@@ -25,7 +25,7 @@ import { AppButton } from '../base/app-button';
 
     <div class="promo-banner__right">
       <div class="promo-banner__image">
-        <img :src="promoBanner2" alt="promo banner 1">
+        <img :src="promoBanner2" alt="promo banner 2">
       </div>
     </div>
     
@@ -33,14 +33,23 @@ import { AppButton } from '../base/app-button';
 
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/shared/styles/_variables.scss" as *;
+
 .promo-banner {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  min-height: 300px;
+  height: 600px;
   max-height: 600px;
   border-radius: 12px;
   overflow: hidden;
+
+  @media (max-width: $breakpoint-tablet) {
+    grid-template-columns: 100%;
+    grid-auto-rows: minmax(400px, min-content);
+    height: unset;
+    max-height: unset;
+  }
 }
 .promo-banner__left, .promo-banner__content {
   grid-area: 1 / 1;
@@ -53,6 +62,9 @@ import { AppButton } from '../base/app-button';
   width: 100%;
   height: 100%;
   overflow: hidden;
+  @media (max-width: $breakpoint-tablet) {
+    max-height: 700px;
+  }
 }
 .promo-banner__image img {
   width: 100%;
@@ -71,6 +83,10 @@ import { AppButton } from '../base/app-button';
   gap: 40px;
   justify-content: center;
   align-items: start;
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: 30px 40px;
+  }
 }
 .promo-banner__title {
   text-transform: uppercase;

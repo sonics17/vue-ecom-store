@@ -22,19 +22,28 @@ const promoCards = [
 </script>
 
 <template>
-  <section class="promo-section">
+  <div class="promo-section">
     <PromoCard
       v-for="(card, index) in promoCards"
       v-bind="card"
       :key="index"
+      class="promo-section__item"
     ></PromoCard>
-  </section>
+  </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/shared/styles/_variables.scss" as *;
+
 .promo-section {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
+
+  @media (max-width: $breakpoint-tablet) {
+    gap: 20px;
+    grid-template-columns: 100%;
+    grid-auto-rows: minmax(6rem, 22rem);
+  }
 }
 </style>

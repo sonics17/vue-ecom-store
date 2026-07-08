@@ -4,6 +4,7 @@
 
 .typography--regular {font-weight: var(--font-weight-regular);}
 .typography--medium {font-weight: var(--font-weight-medium);}
+.typography--semi-bold {font-weight: var(--font-weight-semi-bold);}
 .typography--bold {font-weight: var(--font-weight-bold);}
 .typography--extra-bold {font-weight: var(--font-weight-extra-bold);}
 

@@ -1,6 +1,6 @@
 <script setup>
 import { Typography } from '@/shared/ui/base/typography';
-import ArrowIcon from '@/shared/ui/icons/ArrowIcon.vue';
+import { IconArrow} from '@/shared/ui/icons';
 
 defineProps({
   name: String,
@@ -18,10 +18,10 @@ defineProps({
     <div class="category-card__image">
       <img :src="imageUrl" :alt="`${name} photo`">
     </div>
-    <Typography class="category-card__name" tag="span" weight="bold">{{ name }}</Typography>
+    <Typography class="category-card__title" tag="span" weight="bold">{{ name }}</Typography>
     <Typography class="category-card__text" tag="span" color="secondary" size="xs" weight="medium">Explore Now!</Typography>
     <span class="category-card__arrow">
-      <ArrowIcon />
+      <IconArrow />
     </span>
   </RouterLink>
 </template>
@@ -33,7 +33,7 @@ defineProps({
   grid-template-rows: 390px min-content min-content;
   grid-template-areas: 
     "image image"
-    "name arrow"
+    "title arrow"
     "explore arrow";
   gap: 4px;
   border-radius: 10px;
@@ -41,7 +41,7 @@ defineProps({
 .category-card__image {
   grid-area: image;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 15px;
 }
 .category-card__image img {
   height: 100%;
@@ -50,8 +50,8 @@ defineProps({
   object-position: center;
   transition: all .3s ease;
 }
-.category-card__name {
-  grid-area: name;
+.category-card__title {
+  grid-area: title;
   margin-top: 10px;
 }
 .category-card__text {
