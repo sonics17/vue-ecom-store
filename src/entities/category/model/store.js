@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { supabase } from "@/shared/api/supabase";
+import { categoriesApi } from "@/shared/api";
 
 export const useCategoryStore = defineStore('categoryStore', () => {
   const allCategories = ref([]);
@@ -18,6 +18,7 @@ export const useCategoryStore = defineStore('categoryStore', () => {
   })
 
 
+  
   const getCategoryIdsBySlug = (rootCategorySlug, subCategorySlug = null) => {
     const rootCategory = allCategories.value.find(category => category.parent_id === null && category.slug === rootCategorySlug);
 
@@ -52,15 +53,9 @@ export const useCategoryStore = defineStore('categoryStore', () => {
     isLoading.value = true
 
     try {
-      const {data, error} = await supabase.from('categories').select('*');
-
-      if (error) {
-        throw error;
-      }
-
-      allCategories.value = data;
+      allCategories.value = await categoriesApi.getCategories();
     } catch (err) {
-      console.error('Error:', err.message)
+      console.error('Error:', err)
     } finally {
       isLoading.value = false
     }

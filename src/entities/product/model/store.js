@@ -1,42 +1,32 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { supabase } from "@/shared/api/supabase";
+import { productsApi } from "@/shared/api";
 
 export const useProductStore = defineStore('productStore', () => {
   const products = ref([])
   const isLoading = ref(false)
 
-  const fetchProducts = async(categoryId) => {
+  const fetchProducts = async(activeCategoryId, priceFrom, priceTo, colors, sizes) => {
+    console.log("FETCH")
     isLoading.value = true
 
     try {
-      const { data, error } = await supabase
-      .from('products')
-      .select(`
-        *,
-        product_color_variants (
-          id,
-          image_url,
-          colors (id, name, hex),
-          products_stock (
-            stock,
-            sizes (name)
-          )
-        ),
-        brands (id, name)
-      `)
-      .in('category_id', categoryId)
+      const filters = {
+        categoryId: activeCategoryId,
+        priceFrom: priceFrom,
+        priceTo: priceTo,
+        colors: colors,
+        sizes: sizes
+      }
 
-      if (error) throw error;
-
-      products.value = data
-      console.log(products)
+      products.value = await productsApi.getProducts(filters)
     } catch (err) {
-      console.error('Error:', err.message)
+      console.error('Error:', err)
     } finally {
       isLoading.value = false
     }
   }
+
 
   return {products, isLoading, fetchProducts}
 })

@@ -1,6 +1,5 @@
 .filter-title-layout {
   padding: 20px 30px;
-  border-top: 1px solid var(--color-medium-gray);
   border-bottom: 1px solid var(--color-medium-gray);
   display: flex;
   justify-content: space-between;
@@ -9,4 +8,9 @@
 
 .filter-section-layout {
   padding: 40px 30px;
+  border-bottom: 1px solid var(--color-medium-gray);
+}
+
+.filter-section-layout:last-child {
+  border-bottom: none;
 }

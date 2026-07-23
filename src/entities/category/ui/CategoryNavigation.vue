@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { CategoryLink } from '..';
 import { useCategoryStore } from '../model/store';
 import { ChevronToggle } from '@/shared/ui/base/chevron-toggle';
@@ -44,7 +44,7 @@ watch(() => props.activeCategoryId, (newId) => {
 </script>
 
 <template>
-  <div class="category-navigation filter-section-layout">
+  <div class="category-navigation">
     <ul class="category-navigation__root-list">
       <li 
         v-for="rootCategory in categoryStore.rootCategories"
@@ -71,7 +71,7 @@ watch(() => props.activeCategoryId, (newId) => {
 
         </div>
 
-        <Transition name="expand">
+        <Transition name="expand" appear>
           <ul 
             v-if="rootCategory.subCategories.length && isOpen(rootCategory.id)"
             class="category-navigation__sub-list"
@@ -101,6 +101,10 @@ watch(() => props.activeCategoryId, (newId) => {
 </template>
 
 <style scoped>
+.category-navigation {
+  border-top: none;
+}
+
 .category-navigation__root-item:not(:first-child) {
   margin-top: 15px;
 }
@@ -140,7 +144,7 @@ watch(() => props.activeCategoryId, (newId) => {
 
 .expand-enter-to,
 .expand-leave-from {
-  max-height: 300px;
+  max-height: 500px;
   opacity: 1;
 }
 </style>

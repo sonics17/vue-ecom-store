@@ -1,28 +1,9 @@
 <script setup>
-import { computed, watch } from 'vue';
-import { useCategoryStore } from '@/entities/category/model/store';
 import { useProductStore } from '@/entities/product/model/store';
 import { ProductCard } from '@/entities/product';
+import { onMounted } from 'vue';
 
-const props = defineProps({
-  rootCategorySlug: String,
-  subCategorySlug: String
-})
-
-const categoryStore = useCategoryStore();
 const productStore = useProductStore();
-
-const currentCategoryId = computed(() => {
-  return categoryStore.getCategoryIdsBySlug(props.rootCategorySlug, props.subCategorySlug)
-})
-
-watch(currentCategoryId, async (newId) => {
-    if (!newId) return
-
-    await productStore.fetchProducts(currentCategoryId.value)
-  },
-  { immediate: true }
-)
 </script>
 
 <template>
