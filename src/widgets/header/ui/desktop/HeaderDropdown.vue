@@ -1,11 +1,11 @@
 <script setup>
-import { CategoryLink } from "@/entities/category";
-import { AppContainer } from "@/shared/ui/base/app-container";
+import { CategoryLink } from '@/entities/category'
+import { AppContainer } from '@/shared/ui/base/app-container'
 
 defineProps({
   parentSlug: String,
   subCategories: Array,
-});
+})
 </script>
 
 <template>
@@ -45,7 +45,7 @@ defineProps({
 }
 
 .dropdown::before {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 100%;
   left: 0;

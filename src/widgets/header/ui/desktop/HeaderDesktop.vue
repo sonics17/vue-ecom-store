@@ -1,17 +1,17 @@
 <script setup>
-import { ref } from "vue";
-import { useCategoryStore } from "@/entities/category/model/store";
-import { SearchProducts } from "@/features/search-products";
-import logoUrl from "@/shared/assets/images/logo.svg";
-import { AppButton } from "@/shared/ui/base/app-button/index.js";
-import { AppContainer } from "@/shared/ui/base/app-container/index.js";
-import { IconCart, IconUser, IconHeart } from "@/shared/ui/icons";
-import HeaderDropdown from "./HeaderDropdown.vue";
-import { CategoryLink } from "@/entities/category";
+import { ref } from 'vue'
+import { useCategoryStore } from '@/entities/category/model/store'
+import { SearchProducts } from '@/features/search-products'
+import logoUrl from '@/shared/assets/images/logo.svg'
+import { AppButton } from '@/shared/ui/base/app-button/index.js'
+import { AppContainer } from '@/shared/ui/base/app-container/index.js'
+import { IconCart, IconUser, IconHeart } from '@/shared/ui/icons'
+import HeaderDropdown from './HeaderDropdown.vue'
+import { CategoryLink } from '@/entities/category'
 
-const categoryStore = useCategoryStore();
+const categoryStore = useCategoryStore()
 
-const activeCategory = ref(null);
+const activeCategory = ref(null)
 </script>
 
 <template>
@@ -30,7 +30,6 @@ const activeCategory = ref(null);
           @mouseleave="activeCategory = null"
           @click="activeCategory = null"
         >
-
           <CategoryLink
             :root-slug="category.slug"
             color="secondary"
@@ -39,7 +38,6 @@ const activeCategory = ref(null);
           >
             {{ category.name }}
           </CategoryLink>
-          
 
           <Transition name="dropdown">
             <HeaderDropdown
@@ -50,7 +48,6 @@ const activeCategory = ref(null);
               @close="activeCategory = null"
             ></HeaderDropdown>
           </Transition>
-
         </div>
       </nav>
 
@@ -97,7 +94,7 @@ const activeCategory = ref(null);
 }
 
 .header__link::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   bottom: 0;
@@ -125,7 +122,9 @@ const activeCategory = ref(null);
 .dropdown-enter-active,
 .dropdown-leave-active {
   transform: translateY(0);
-  transition: opacity .2s ease, transform .2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .dropdown-enter-from,

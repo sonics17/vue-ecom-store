@@ -1,1 +1,1 @@
-export {default as CatalogSidebar} from './ui/CatalogSidebar.vue';
+export { default as CatalogSidebar } from './ui/CatalogSidebar.vue'

@@ -1,23 +1,23 @@
 <script setup>
-import defaultImageUrl from '@/shared/assets/images/placeholder.svg';
-import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints';
-import { computed, ref } from 'vue';
+import defaultImageUrl from '@/shared/assets/images/placeholder.svg'
+import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
+import { computed, ref } from 'vue'
 
-const { isDesktop } = useDeviceBreakpoints();
+const { isDesktop } = useDeviceBreakpoints()
 
-const MAX_GALLERY_SIZE = 3;
+const MAX_GALLERY_SIZE = 3
 
 const props = defineProps({
   images: {
     type: Array,
-    default: []
-  }
+    default: () => [],
+  },
 })
 
 const currentIndex = ref(0)
 
 const isDefaultImage = computed(() => {
-  return !props.images || props.images.length === 0 
+  return !props.images || props.images.length === 0
 })
 
 const displayedImages = computed(() => {
@@ -26,38 +26,44 @@ const displayedImages = computed(() => {
 })
 
 const currentImage = computed(() => {
-  return isDefaultImage.value ? defaultImageUrl : displayedImages.value[currentIndex.value]
+  return isDefaultImage.value
+    ? defaultImageUrl
+    : displayedImages.value[currentIndex.value]
 })
-
 </script>
 
 <template>
   <div class="preview-gallery">
-    <img 
-      :src="currentImage" 
+    <img
+      :src="currentImage"
       alt="product image"
       class="preview-gallery__image"
-      :class="{'default-image': isDefaultImage}"
-    >
+      :class="{ 'default-image': isDefaultImage }"
+    />
 
-    <div v-if="isDesktop && displayedImages.length > 1" class="preview-gallery__zones">
+    <div
+      v-if="isDesktop && displayedImages.length > 1"
+      class="preview-gallery__zones"
+    >
       <div
         v-for="(image, index) in displayedImages"
         :key="index"
         class="preview-gallery__zone"
-        :style="{flex: `1 1 ${100/displayedImages.length}%`}"
+        :style="{ flex: `1 1 ${100 / displayedImages.length}%` }"
         @mouseenter="currentIndex = index"
-      >
-      </div>
+      ></div>
     </div>
 
-    <div v-if="isDesktop && displayedImages.length > 1" class="preview-gallery__dots">
-      <span 
+    <div
+      v-if="isDesktop && displayedImages.length > 1"
+      class="preview-gallery__dots"
+    >
+      <span
         v-for="(image, index) in displayedImages"
         :key="index"
         @mouseenter="currentIndex = index"
         class="preview-gallery__dot"
-        :class="{'preview-gallery__dot--active': currentIndex === index}"
+        :class="{ 'preview-gallery__dot--active': currentIndex === index }"
       ></span>
     </div>
   </div>

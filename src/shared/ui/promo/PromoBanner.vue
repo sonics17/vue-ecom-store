@@ -1,40 +1,45 @@
 <script setup>
-import promoBanner1 from '@/shared/assets/images/banners/promo-banner-1.webp';
-import promoBanner2 from '@/shared/assets/images/banners/promo-banner-2.webp';
-import { Typography } from '../base/typography';
-import { AppButton } from '../base/app-button';
+import promoBanner1 from '@/shared/assets/images/banners/promo-banner-1.webp'
+import promoBanner2 from '@/shared/assets/images/banners/promo-banner-2.webp'
+import { Typography } from '../base/typography'
+import { AppButton } from '../base/app-button'
 </script>
 
 <template>
   <section class="promo-banner">
     <div class="promo-banner__left">
       <div class="promo-banner__image promo-banner__image-filter">
-        <img :src="promoBanner1" alt="promo banner 1">
+        <img :src="promoBanner1" alt="promo banner 1" />
       </div>
     </div>
 
     <div class="promo-banner__content">
-      <Typography tag="h3" size="2xl" color="white" weight="extra-bold" class="promo-banner__title">
+      <Typography
+        tag="h3"
+        size="2xl"
+        color="white"
+        weight="extra-bold"
+        class="promo-banner__title"
+      >
         WE MADE YOUR EVERYDAY FASHION BETTER!
       </Typography>
       <Typography color="white" class="promo-banner__text">
-        In our journey to improve everyday fashion, euphoria presents EVERYDAY wear range - Comfortable & Affordable fashion 24/7
+        In our journey to improve everyday fashion, euphoria presents EVERYDAY
+        wear range - Comfortable & Affordable fashion 24/7
       </Typography>
       <AppButton color="white">Shop now</AppButton>
     </div>
 
     <div class="promo-banner__right">
       <div class="promo-banner__image">
-        <img :src="promoBanner2" alt="promo banner 2">
+        <img :src="promoBanner2" alt="promo banner 2" />
       </div>
     </div>
-    
   </section>
-
 </template>
 
 <style lang="scss" scoped>
-@use "@/shared/styles/_variables.scss" as *;
+@use '@/shared/styles/_variables.scss' as *;
 
 .promo-banner {
   display: grid;
@@ -51,10 +56,12 @@ import { AppButton } from '../base/app-button';
     max-height: unset;
   }
 }
-.promo-banner__left, .promo-banner__content {
+.promo-banner__left,
+.promo-banner__content {
   grid-area: 1 / 1;
 }
-.promo-banner__left, .promo-banner__right {
+.promo-banner__left,
+.promo-banner__right {
   height: 100%;
   overflow: hidden;
 }

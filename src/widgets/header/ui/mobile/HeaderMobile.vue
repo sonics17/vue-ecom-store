@@ -1,40 +1,36 @@
 <script setup>
-import { onUnmounted, ref, watch } from "vue";
-import { AppButton } from '@/shared/ui/base/app-button';
-import { IconHeart, IconUser, IconCart, IconSearch } from '@/shared/ui/icons';
-import { AppContainer } from '@/shared/ui/base/app-container';
-import logoUrl from '@/shared/assets/images/logo.svg';
-import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints';
-import Drawer from "./Drawer.vue";
+import { onUnmounted, ref, watch } from 'vue'
+import { AppButton } from '@/shared/ui/base/app-button'
+import { IconHeart, IconUser, IconCart, IconSearch } from '@/shared/ui/icons'
+import { AppContainer } from '@/shared/ui/base/app-container'
+import logoUrl from '@/shared/assets/images/logo.svg'
+import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
+import Drawer from './Drawer.vue'
 
-const {isMobile} = useDeviceBreakpoints();
+const { isMobile } = useDeviceBreakpoints()
 
-const isOpen = ref(false);
+const isOpen = ref(false)
 
 const toggleMenu = () => {
-  isOpen.value = !isOpen.value;
+  isOpen.value = !isOpen.value
 }
 
-watch(isOpen, (isDrawerOpen) => {
+watch(isOpen, isDrawerOpen => {
   if (isDrawerOpen) {
-    document.body.classList.add('drawer-open');
+    document.body.classList.add('drawer-open')
   } else {
-    document.body.classList.remove('drawer-open');
+    document.body.classList.remove('drawer-open')
   }
 })
 
 onUnmounted(() => {
-  document.body.classList.remove('drawer-open');
+  document.body.classList.remove('drawer-open')
 })
-
-
-
 </script>
 
 <template>
   <header class="header">
     <AppContainer class="header__container">
-
       <RouterLink to="/" class="header__logo">
         <img :src="logoUrl" alt="Logo" />
       </RouterLink>
@@ -42,29 +38,30 @@ onUnmounted(() => {
       <AppButton variant="icon" color="gray"><IconSearch /></AppButton>
 
       <div class="header__actions">
-        <AppButton v-if="!isMobile" variant="icon" color="gray"><IconHeart /></AppButton>
-        <AppButton v-if="!isMobile" variant="icon" color="gray"><IconUser /></AppButton>
+        <AppButton v-if="!isMobile" variant="icon" color="gray"
+          ><IconHeart
+        /></AppButton>
+        <AppButton v-if="!isMobile" variant="icon" color="gray"
+          ><IconUser
+        /></AppButton>
         <AppButton variant="icon" color="gray"><IconCart /></AppButton>
       </div>
 
       <button
         @click="toggleMenu"
-        :class="{'header__burger-button--open': isOpen}"
+        :class="{ 'header__burger-button--open': isOpen }"
         class="header__burger-button"
       >
         <span></span>
       </button>
-
     </AppContainer>
-    
-    <Drawer
-      v-model:is-open="isOpen"
-    ></Drawer>
+
+    <Drawer v-model:is-open="isOpen"></Drawer>
   </header>
 </template>
 
 <style lang="scss" scoped>
-@use "@/shared/styles/_variables.scss" as *;
+@use '@/shared/styles/_variables.scss' as *;
 
 .header {
   padding: 10px 0;
@@ -112,8 +109,9 @@ onUnmounted(() => {
     transition: opacity 0.2s ease-in-out;
   }
 
-  &::before, &::after {
-    content: "";
+  &::before,
+  &::after {
+    content: '';
     position: absolute;
     width: 24px;
     height: 2px;
@@ -146,8 +144,6 @@ onUnmounted(() => {
     }
   }
 }
-
-
 </style>
 
 <style>

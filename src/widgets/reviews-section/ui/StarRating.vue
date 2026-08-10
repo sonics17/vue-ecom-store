@@ -1,18 +1,18 @@
 <script setup>
-import { computed } from 'vue';
-import StarIcon from './StarIcon.vue';
+import { computed } from 'vue'
+import StarIcon from './StarIcon.vue'
 
 const props = defineProps({
   rating: {
     type: Number,
-    default: 5
-  }
+    default: 5,
+  },
 })
 
-const stars = computed(() =>  {
-  const result = new Array(5).fill('empty');
+const stars = computed(() => {
+  const result = new Array(5).fill('empty')
 
-  const fullStars = Math.floor(props.rating);
+  const fullStars = Math.floor(props.rating)
 
   if (props.rating % 1 !== 0) {
     result[fullStars] = 'half'
@@ -24,7 +24,6 @@ const stars = computed(() =>  {
 
   return result
 })
-
 </script>
 
 <template>

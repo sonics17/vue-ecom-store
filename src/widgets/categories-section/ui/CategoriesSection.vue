@@ -1,24 +1,36 @@
 <script setup>
-import { Typography } from '@/shared/ui/base/typography/index.js';
-import CategoryCard from './CategoryCard.vue';
-import { IconArrow} from '@/shared/ui/icons';
+import { Typography } from '@/shared/ui/base/typography/index.js'
+import CategoryCard from './CategoryCard.vue'
+import { IconArrow } from '@/shared/ui/icons'
 
 defineProps({
   title: String,
   items: Array,
-  rootSlug: String
+  rootSlug: String,
 })
 </script>
 
 <template>
   <section class="category-section">
-
     <div class="category-section__header">
-    
-      <Typography has-line tag="h3" size="xl" weight="bold" class="category-section__title">{{ title }}</Typography>
+      <Typography
+        has-line
+        tag="h3"
+        size="xl"
+        weight="bold"
+        class="category-section__title"
+        >{{ title }}</Typography
+      >
 
-      <RouterLink :to="{name: 'catalog', params: {rootCategory: rootSlug}}" class="category-section__link">
-        <Typography tag="span" weight="bold" class="category-section__link-text">
+      <RouterLink
+        :to="{ name: 'catalog', params: { rootCategory: rootSlug } }"
+        class="category-section__link"
+      >
+        <Typography
+          tag="span"
+          weight="bold"
+          class="category-section__link-text"
+        >
           {{ `Shop ${rootSlug}` }}
         </Typography>
         <IconArrow class="arrow-icon" />
@@ -40,7 +52,7 @@ defineProps({
 </template>
 
 <style lang="scss" scoped>
-@use "@/shared/styles/_variables.scss" as *;
+@use '@/shared/styles/_variables.scss' as *;
 
 .category-section__header {
   margin-bottom: 60px;

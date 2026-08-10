@@ -1,1 +1,1 @@
-export {default as CategoriesSection} from './ui/CategoriesSection.vue';
+export { default as CategoriesSection } from './ui/CategoriesSection.vue'

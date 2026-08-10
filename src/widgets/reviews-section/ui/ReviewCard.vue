@@ -1,12 +1,12 @@
 <script setup>
-import { Typography } from '@/shared/ui/base/typography/index.js';
-import StarRating from './StarRating.vue';
+import { Typography } from '@/shared/ui/base/typography/index.js'
+import StarRating from './StarRating.vue'
 
 defineProps({
   userName: String,
   reviewText: String,
   rating: Number,
-  imageUrl: String
+  imageUrl: String,
 })
 </script>
 
@@ -14,12 +14,24 @@ defineProps({
   <div class="review-card">
     <div class="review-card__top">
       <div class="review-card__image">
-        <img :src="imageUrl" alt="">
+        <img :src="imageUrl" alt="" />
       </div>
       <StarRating :rating="rating"></StarRating>
     </div>
-    <Typography tag="span" weight="medium" size="md" class="review-card__name swiper-no-swiping">{{ userName }}</Typography>
-    <Typography tag="p" size="xs" color="secondary" class="review-card__text swiper-no-swiping">{{ reviewText }}</Typography>
+    <Typography
+      tag="span"
+      weight="medium"
+      size="md"
+      class="review-card__name swiper-no-swiping"
+      >{{ userName }}</Typography
+    >
+    <Typography
+      tag="p"
+      size="xs"
+      color="secondary"
+      class="review-card__text swiper-no-swiping"
+      >{{ reviewText }}</Typography
+    >
   </div>
 </template>
 

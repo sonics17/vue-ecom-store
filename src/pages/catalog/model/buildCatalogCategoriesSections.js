@@ -9,13 +9,13 @@ export function buildCatalogCategoriesSections(allCategories, rootCategories) {
           slug: subCategory.slug,
           imageUrl: subCategory.image_url,
           parentSlug: rootCategory.slug,
-        };
-      });
+        }
+      })
 
     return {
       title: rootCategory.name,
       items: subCategories,
       rootSlug: rootCategory.slug,
-    };
-  });
+    }
+  })
 }

@@ -26,6 +26,8 @@
     "node": "^20.19.0 || >=22.12.0"
   },
   "prettier": {
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "semi": false,
+    "singleQuote": true
   }
 }

@@ -1,27 +1,32 @@
 <script setup>
-import { ref } from 'vue';
-import { ChevronToggle } from '../base/chevron-toggle';
-import { Typography } from '../base/typography';
+import { ref } from 'vue'
+import { ChevronToggle } from '../base/chevron-toggle'
+import { Typography } from '../base/typography'
 
 defineProps({
-  title: String
+  title: String,
 })
 
 const isOpen = ref(true)
 </script>
 
 <template>
-  <div class="filter-title-layout">
-    <Typography tag="h3" size="lg" weight="medium" color="secondary">{{title}}</Typography>
-    <ChevronToggle :is-open="isOpen" @toggle="isOpen = !isOpen"></ChevronToggle>
-  </div>
-  <Transition name="expand" appear>
-    <div 
-      v-show="isOpen"
-      class="filter-section-layout">
-      <slot></slot>
+  <div class="filter-section">
+    <div class="filter-title-layout">
+      <Typography tag="h3" size="lg" weight="medium" color="secondary">{{
+        title
+      }}</Typography>
+      <ChevronToggle
+        :is-open="isOpen"
+        @toggle="isOpen = !isOpen"
+      ></ChevronToggle>
     </div>
-  </Transition>
+    <Transition name="expand" appear>
+      <div v-show="isOpen" class="filter-section-layout">
+        <slot></slot>
+      </div>
+    </Transition>
+  </div>
 </template>
 
 <style scoped>

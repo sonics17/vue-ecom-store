@@ -2,27 +2,25 @@
 const props = defineProps({
   variant: {
     type: String,
-    default: 'solid'
+    default: 'solid',
   },
   color: {
     type: String,
-    default: 'purple'
-  }
+    default: 'purple',
+  },
 })
 </script>
 
 <template>
-  <button :class="[
-    'app-button', 
-    `app-button--${variant}`,
-    `app-button--${color}`
-  ]">
+  <button
+    :class="['app-button', `app-button--${variant}`, `app-button--${color}`]"
+  >
     <slot></slot>
   </button>
 </template>
 
 <style lang="scss" scoped>
-@use "@/shared/styles/variables.scss" as *;
+@use '@/shared/styles/variables.scss' as *;
 
 .app-button {
   display: flex;
@@ -61,8 +59,8 @@ const props = defineProps({
   width: 44px;
   height: 44px;
   padding: 0;
-  
-  @media(max-width: $breakpoint-tablet) {
+
+  @media (max-width: $breakpoint-tablet) {
     box-sizing: border-box;
     padding: 7px;
   }
@@ -72,7 +70,7 @@ const props = defineProps({
   color: var(--color-secondary);
   background-color: var(--color-light-gray);
 
-  @media(max-width: $breakpoint-tablet) {
+  @media (max-width: $breakpoint-tablet) {
     background-color: transparent;
   }
 }

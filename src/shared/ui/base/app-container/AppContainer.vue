@@ -5,7 +5,7 @@
 </template>
 
 <style lang="scss" scoped>
-@use "@/shared/styles/_variables.scss" as *;
+@use '@/shared/styles/_variables.scss' as *;
 
 .app-container {
   max-width: 1380px;

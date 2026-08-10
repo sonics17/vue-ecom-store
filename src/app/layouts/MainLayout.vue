@@ -1,7 +1,6 @@
 <script setup>
-import Footer from '@/widgets/footer/ui/Footer.vue';
-import { Header } from '@/widgets/header';
-
+import Footer from '@/widgets/footer/ui/Footer.vue'
+import { Header } from '@/widgets/header'
 </script>
 <template>
   <div class="app-layout">

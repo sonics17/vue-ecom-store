@@ -1,32 +1,32 @@
 <script setup>
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Pagination, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import BannerSlide from './BannerSlide.vue';
-import { slides } from '../data/slides';
+import { Pagination, Autoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import BannerSlide from './BannerSlide.vue'
+import { slides } from '../data/slides'
 
 const modules = [Pagination, Autoplay]
 </script>
 
 <template>
-    <swiper
-      :modules="modules"
-      :slides-per-view="1"
-      :space-between="50"
-      :pagination="{ clickable: true, bulletClass: 'swiper-bullet', bulletActiveClass: 'swiper-bullet-active', horizontalClass: 'pagination-horizontal' }"
-      :autoplay="{delay: 5000}"
-      class="swiper"
-    >
-      <swiper-slide 
-        v-for="slide in slides" 
-        class="swiper-slide" 
-        :key="slide.id"
-      >
-        <BannerSlide v-bind="slide"></BannerSlide>
-      </swiper-slide>
+  <swiper
+    :modules="modules"
+    :slides-per-view="1"
+    :space-between="50"
+    :pagination="{
+      clickable: true,
+      bulletClass: 'swiper-bullet',
+      bulletActiveClass: 'swiper-bullet-active',
+      horizontalClass: 'pagination-horizontal',
+    }"
+    :autoplay="{ delay: 5000 }"
+    class="swiper"
+  >
+    <swiper-slide v-for="slide in slides" class="swiper-slide" :key="slide.id">
+      <BannerSlide v-bind="slide"></BannerSlide>
+    </swiper-slide>
   </swiper>
-
 </template>
 
 <style scoped>

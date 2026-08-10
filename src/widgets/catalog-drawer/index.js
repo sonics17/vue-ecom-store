@@ -1,1 +1,1 @@
-export {default as CatalogDrawer} from './ui/CatalogDrawer.vue';
+export { default as CatalogDrawer } from './ui/CatalogDrawer.vue'

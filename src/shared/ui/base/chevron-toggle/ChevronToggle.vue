@@ -4,22 +4,19 @@ import ChevronRight from '@/shared/assets/images/chevron-right.svg'
 defineProps({
   isOpen: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 </script>
 
 <template>
-  <span
-    @click="$emit('toggle')"
-    class="chevron-wrapper"
-  >
+  <span @click="$emit('toggle')" class="chevron-wrapper">
     <img
       :src="ChevronRight"
       alt="arrow"
       class="chevron"
-      :class="{'chevron--open': isOpen}"
-    >
+      :class="{ 'chevron--open': isOpen }"
+    />
   </span>
 </template>
 

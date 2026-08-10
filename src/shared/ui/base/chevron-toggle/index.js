@@ -1,1 +1,1 @@
-export {default as ChevronToggle} from './ChevronToggle.vue';
+export { default as ChevronToggle } from './ChevronToggle.vue'

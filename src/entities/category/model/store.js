@@ -1,10 +1,10 @@
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
-import { categoriesApi } from "@/shared/api";
+import { defineStore } from 'pinia'
+import { computed, ref } from 'vue'
+import { categoriesApi } from '@/shared/api'
 
 export const useCategoryStore = defineStore('categoryStore', () => {
-  const allCategories = ref([]);
-  const isLoading = ref(false);
+  const allCategories = ref([])
+  const isLoading = ref(false)
 
   const rootCategories = computed(() => {
     return allCategories.value
@@ -12,48 +12,65 @@ export const useCategoryStore = defineStore('categoryStore', () => {
       .map(rootCategory => {
         return {
           ...rootCategory,
-          subCategories: allCategories.value.filter(category => category.parent_id === rootCategory.id)
+          subCategories: allCategories.value.filter(
+            category => category.parent_id === rootCategory.id,
+          ),
         }
       })
   })
 
-
-  
   const getCategoryIdsBySlug = (rootCategorySlug, subCategorySlug = null) => {
-    const rootCategory = allCategories.value.find(category => category.parent_id === null && category.slug === rootCategorySlug);
+    const rootCategory = allCategories.value.find(
+      category =>
+        category.parent_id === null && category.slug === rootCategorySlug,
+    )
 
     if (!rootCategory) return []
 
     if (!subCategorySlug) {
       return allCategories.value
         .filter(category => category.parent_id === rootCategory.id)
-        .map(category => category.id);
-    } 
-    
-    const subCategory = allCategories.value.find(category => category.parent_id === rootCategory.id && category.slug === subCategorySlug);
-    
+        .map(category => category.id)
+    }
+
+    const subCategory = allCategories.value.find(
+      category =>
+        category.parent_id === rootCategory.id &&
+        category.slug === subCategorySlug,
+    )
+
     return subCategory ? [subCategory.id] : []
   }
 
-  const getCurrentCategoryIdBySlug = (rootCategorySlug, subCategorySlug = null) => {
-    const rootCategory = allCategories.value.find(category => category.parent_id === null && category.slug === rootCategorySlug);
+  const getCurrentCategoryIdBySlug = (
+    rootCategorySlug,
+    subCategorySlug = null,
+  ) => {
+    const rootCategory = allCategories.value.find(
+      category =>
+        category.parent_id === null && category.slug === rootCategorySlug,
+    )
 
     if (!rootCategory) return null
 
     if (!subCategorySlug) return rootCategory.id
 
-    const subCategory = allCategories.value.find(category => category.parent_id === rootCategory.id && category.slug === subCategorySlug);
-    
+    const subCategory = allCategories.value.find(
+      category =>
+        category.parent_id === rootCategory.id &&
+        category.slug === subCategorySlug,
+    )
+
     return subCategory ? subCategory.id : null
   }
 
   const fetchCategories = async () => {
-    if (allCategories.value.length > 0) return;
+    if (allCategories.value.length > 0) return
 
     isLoading.value = true
 
     try {
-      allCategories.value = await categoriesApi.getCategories();
+      allCategories.value = await categoriesApi.getCategories()
     } catch (err) {
       console.error('Error:', err)
     } finally {
@@ -61,5 +78,12 @@ export const useCategoryStore = defineStore('categoryStore', () => {
     }
   }
 
-  return {allCategories, rootCategories, isLoading, fetchCategories, getCategoryIdsBySlug, getCurrentCategoryIdBySlug}
+  return {
+    allCategories,
+    rootCategories,
+    isLoading,
+    fetchCategories,
+    getCategoryIdsBySlug,
+    getCurrentCategoryIdBySlug,
+  }
 })

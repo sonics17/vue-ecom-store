@@ -1,104 +1,81 @@
 <script setup>
-import { useCategoryStore } from '@/entities/category/model/store';
-import { useProductStore } from '@/entities/product/model/store';
-import { useFilterStore } from '@/features/catalog-filter/model/store';
-import { AppContainer } from '@/shared/ui/base/app-container';
-import { computed, ref, watch, watchEffect, onUnmounted, onMounted } from 'vue';
-import { buildCatalogCategoriesSections } from '../model/buildCatalogCategoriesSections';
-import { CategoriesSection } from '@/widgets/categories-section';
-import { useRoute, useRouter } from 'vue-router';
-import { ProductCatalog } from '@/widgets/product-catalog';
-import { CatalogSidebar } from '@/widgets/catalog-sidebar';
-import { CatalogFilter } from '@/features/catalog-filter';
-import { CategoryNavigation } from '@/entities/category';
-import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints';
-import { CatalogDrawer } from '@/widgets/catalog-drawer';
+import { useCategoryStore } from '@/entities/category/model/store'
+import { useProductStore } from '@/entities/product/model/store'
+import { AppContainer } from '@/shared/ui/base/app-container'
+import { computed, watch } from 'vue'
+import { buildCatalogCategoriesSections } from '../model/buildCatalogCategoriesSections'
+import { CategoriesSection } from '@/widgets/categories-section'
+import { useRoute, useRouter } from 'vue-router'
+import { ProductCatalog } from '@/widgets/product-catalog'
+import { CatalogSidebar } from '@/widgets/catalog-sidebar'
+import { PriceFilter } from '@/features/catalog-filter'
+import { CategoryNavigation } from '@/entities/category'
+import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
+import { CatalogDrawer } from '@/widgets/catalog-drawer'
+import { useCatalogStore } from '../model/store'
+import { useCatalogQuery } from '../model/useCatalogQuery'
 
-
-const route = useRoute();
-const router = useRouter();
-const categoryStore = useCategoryStore();
-const productStore = useProductStore();
-const filterStore = useFilterStore();
-const {isDesktop} = useDeviceBreakpoints();
-
+const route = useRoute()
+const router = useRouter()
+const {
+  minPrice,
+  maxPrice,
+  setMinPrice,
+  setMaxPrice,
+  normalizeQuery,
+  isSameQuery,
+} = useCatalogQuery()
+const categoryStore = useCategoryStore()
+const catalogStore = useCatalogStore()
+const productStore = useProductStore()
+const { isDesktop } = useDeviceBreakpoints()
 
 const categoriesSections = computed(() => {
-  return buildCatalogCategoriesSections(categoryStore.allCategories, categoryStore.rootCategories)
-})
-
-
-const currentCategoryIds = computed(() => {
-  return categoryStore.getCategoryIdsBySlug(route.params.rootCategory, route.params.subCategory)
-})
-
-
-// const queryParams = computed(() => {
-//   return {
-//     minPrice: Number(route.query.minPrice) || filterStore.filtersByCategory.minPrice,
-//     maxPrice: Number(route.query.maxPrice) || filterStore.filtersByCategory.maxPrice,
-//     colors: Number(route.query.color) || filterStore.filtersByCategory.selectedColorIds,
-//     sizes: Number(route.query.size) || filterStore.filtersByCategory.selectedSizeIds
-//   }
-// })
-
-const buildRequestFilters = () => {
-  return {
-    minPrice: route.query.minPrice ? Number(route.query.minPrice) : filterStore.availableFilters.minPrice,
-    maxPrice: route.query.maxPrice ? Number(route.query.maxPrice) : filterStore.availableFilters.maxPrice,
-    colors: route.query.color ? String(route.query.color).split(',').map(Number) : filterStore.availableFilters.colors.flatMap(c => c.childrenIds),
-    sizes: route.query.size ? String(route.query.size).split(',').map(Number) : filterStore.availableFilters.sizes.map(s => s.id)
-  }
-}
-
-watch(currentCategoryIds, async (newIds) => {
-  console.log("CATEGORY WATCH")
-  if (!newIds || newIds.length === 0) return
-
-  await filterStore.loadFiltersForCategory(newIds)
-  
-  const filters = buildRequestFilters()
-
-  await productStore.fetchProducts(
-    newIds,
-    filters.minPrice,
-    filters.maxPrice,
-    filters.colors,
-    filters.sizes
+  return buildCatalogCategoriesSections(
+    categoryStore.allCategories,
+    categoryStore.rootCategories,
   )
-}, {immediate: true})
+})
 
+watch(
+  [
+    () => route.params.rootCategory,
+    () => route.params.subCategory,
+    () => route.query,
+  ],
+  async ([newRoot, newSub, newQuery], [oldRoot, oldSub, oldQuery]) => {
+    if (newRoot !== oldRoot || newSub !== oldSub) {
+      const categoryIds = categoryStore.getCategoryIdsBySlug(newRoot, newSub)
+      catalogStore.setCategoryIds(categoryIds)
+      await catalogStore.loadAvailableFilters()
+    }
 
-// watch(
-//   () => [route.params.rootCategory, route.params.subCategory],
-//   async ([root, sub]) => {
-//     console.log("CATEGORY WATCH")
+    const normalizedQuery = normalizeQuery(
+      newQuery,
+      catalogStore.availableFilters,
+    )
 
-//     const ids = categoryStore.getCategoryIdsBySlug(root, sub)
+    if (!isSameQuery(newQuery, normalizedQuery)) {
+      router.replace({ query: normalizedQuery })
+      return
+    }
 
-//     await filterStore.loadFiltersForCategory(ids)
-
-//     const filters = buildRequestFilters()
-
-//     await productStore.fetchProducts(
-//       ids,
-//       filters.minPrice,
-//       filters.maxPrice,
-//       filters.colors,
-//       filters.sizes
-//     )
-//   },
-//   { immediate: true }
-// )
-
-
+    await productStore.fetchProducts({
+      categoryIds: catalogStore.categoryIds,
+      minPrice: minPrice.value,
+      maxPrice: maxPrice.value,
+      colors: [],
+      sizes: [],
+    })
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
   <AppContainer>
     <div class="catalog-container">
-
-      <template v-if="!route.params.rootCategory">
+      <!-- <template v-if="!route.params.rootCategory">
         <CategoriesSection
           v-for="categorySection in categoriesSections"
           :key="categorySection.slug"
@@ -107,52 +84,62 @@ watch(currentCategoryIds, async (newIds) => {
           :rootSlug="categorySection.rootSlug"
           class="categories-section"
         ></CategoriesSection>
-      </template>
+      </template> -->
 
-      <template v-else>
+      <CatalogSidebar v-if="isDesktop" class="catalog-sidebar">
+        <template #navigation>
+          <CategoryNavigation
+            :activeCategoryId="
+              route.params.rootCategory
+                ? categoryStore.getCurrentCategoryIdBySlug(
+                    route.params.rootCategory,
+                    route.params.subCategory,
+                  )
+                : null
+            "
+          />
+        </template>
 
-        <CatalogSidebar v-if="isDesktop" class="catalog-sidebar">
-          <template #navigation>
-            <CategoryNavigation
-              :activeCategoryId="categoryStore.getCurrentCategoryIdBySlug(route.params.rootCategory, route.params.subCategory)"
-            />
-          </template>
-            
-          <template #filters>
-            <CatalogFilter
-            />
-          </template>
-        </CatalogSidebar>
+        <template #filters>
+          <PriceFilter
+            :available-min="catalogStore.availableFilters.minPrice"
+            :available-max="catalogStore.availableFilters.maxPrice"
+            :min-price="minPrice"
+            :max-price="maxPrice"
+            @update-min="price => setMinPrice(price)"
+            @update-max="price => setMaxPrice(price)"
+          ></PriceFilter>
+        </template>
+      </CatalogSidebar>
 
-        <CatalogDrawer v-else />
+      <CatalogDrawer v-else />
 
-        <ProductCatalog
-          v-if="!productStore.isLoading"
-          class="catalog-content"
-          :class="{'catalog-content--desktop': isDesktop}"
-        ></ProductCatalog>
-      </template>
-
+      <ProductCatalog
+        v-if="!catalogStore.isLoading"
+        class="catalog-content"
+        :class="{ 'catalog-content--desktop': isDesktop }"
+      ></ProductCatalog>
     </div>
   </AppContainer>
 </template>
 
 <style lang="scss" scoped>
-@use "@/shared/styles/_variables.scss" as *;
+@use '@/shared/styles/_variables.scss' as *;
 
-.categories-section, .catalog-content {
-    margin-top: 50px;
+.categories-section,
+.catalog-content {
+  margin-top: 50px;
 
-    @media (max-width: $breakpoint-tablet) {
-      margin-top: 20px;
-    }
+  @media (max-width: $breakpoint-tablet) {
+    margin-top: 20px;
+  }
 }
 
 .categories-section {
   &:not(:first-child) {
     margin-top: 80px;
   }
-  
+
   @media (max-width: $breakpoint-tablet) {
     &:not(:first-child) {
       margin-top: 50px;
@@ -163,6 +150,7 @@ watch(currentCategoryIds, async (newIds) => {
 .catalog-container {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 0 50px;
 }
 
@@ -170,9 +158,9 @@ watch(currentCategoryIds, async (newIds) => {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  left:  0;
+  left: 0;
+  height: calc(100vh - 90px);
   width: 300px;
-  height: 80vh;
   overflow-y: scroll;
   overflow-x: hidden;
   scrollbar-width: none;

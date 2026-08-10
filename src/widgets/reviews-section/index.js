@@ -1,1 +1,1 @@
-export { default as ReviewsSection} from './ui/ReviewsSection.vue';
+export { default as ReviewsSection } from './ui/ReviewsSection.vue'

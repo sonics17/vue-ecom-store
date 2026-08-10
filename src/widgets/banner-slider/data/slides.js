@@ -1,5 +1,5 @@
-import banner1 from '@/shared/assets/images/banners/banner-1.webp';
-import banner2 from '@/shared/assets/images/banners/banner-2.webp';
+import banner1 from '@/shared/assets/images/banners/banner-1.webp'
+import banner2 from '@/shared/assets/images/banners/banner-2.webp'
 
 export const slides = [
   {
@@ -8,8 +8,11 @@ export const slides = [
     category: 'Casual Wear',
     text: 'soft / relaxed / effortless',
     image: banner1,
-    link: {name: 'catalog', params: {rootCategory: 'women', subCategory: 't-shirts'}},
-    contentPosition: 'left'
+    link: {
+      name: 'catalog',
+      params: { rootCategory: 'women', subCategory: 't-shirts' },
+    },
+    contentPosition: 'left',
   },
   {
     id: 2,
@@ -17,7 +20,10 @@ export const slides = [
     category: 'New Collection',
     text: 'simple / modern / essential',
     image: banner2,
-    link: {name: 'catalog', params: {rootCategory: 'women', subCategory: 'dresses'}},
-    contentPosition: 'right'
+    link: {
+      name: 'catalog',
+      params: { rootCategory: 'women', subCategory: 'dresses' },
+    },
+    contentPosition: 'right',
   },
 ]

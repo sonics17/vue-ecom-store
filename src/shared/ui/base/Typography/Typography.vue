@@ -1,27 +1,26 @@
 <script setup>
-import './typography.css';
+import './typography.css'
 const props = defineProps({
   tag: {
     type: String,
-    default: 'p'
+    default: 'p',
   },
   size: {
     type: String,
-    default: 'md'
+    default: 'md',
   },
   color: {
     type: String,
-    default: 'primary'
+    default: 'primary',
   },
   weight: {
     type: String,
-    default: 'regular'
+    default: 'regular',
   },
   hasLine: {
     type: Boolean,
-    default: false
-  }
-
+    default: false,
+  },
 })
 </script>
 
@@ -33,12 +32,11 @@ const props = defineProps({
       `typography--${size}`,
       `typography--${color}`,
       `typography--${weight}`,
-      {'typography--with-line': hasLine}
+      { 'typography--with-line': hasLine },
     ]"
   >
     <slot></slot>
   </component>
 </template>
 
-<style>
-</style>
+<style></style>

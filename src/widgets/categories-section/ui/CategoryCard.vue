@@ -1,25 +1,37 @@
 <script setup>
-import { Typography } from '@/shared/ui/base/typography';
-import { IconArrow} from '@/shared/ui/icons';
+import { Typography } from '@/shared/ui/base/typography'
+import { IconArrow } from '@/shared/ui/icons'
 
 defineProps({
   name: String,
   imageUrl: String,
   slug: String,
-  parentSlug: String
+  parentSlug: String,
 })
 </script>
 
 <template>
   <RouterLink
     class="category-card"
-    :to="{name: 'catalog', params:{rootCategory: parentSlug, subCategory: slug}}"
+    :to="{
+      name: 'catalog',
+      params: { rootCategory: parentSlug, subCategory: slug },
+    }"
   >
     <div class="category-card__image">
-      <img :src="imageUrl" :alt="`${name} photo`">
+      <img :src="imageUrl" :alt="`${name} photo`" />
     </div>
-    <Typography class="category-card__title" tag="span" weight="bold">{{ name }}</Typography>
-    <Typography class="category-card__text" tag="span" color="secondary" size="xs" weight="medium">Explore Now!</Typography>
+    <Typography class="category-card__title" tag="span" weight="bold">{{
+      name
+    }}</Typography>
+    <Typography
+      class="category-card__text"
+      tag="span"
+      color="secondary"
+      size="xs"
+      weight="medium"
+      >Explore Now!</Typography
+    >
     <span class="category-card__arrow">
       <IconArrow />
     </span>
@@ -31,10 +43,10 @@ defineProps({
   display: grid;
   grid-template-columns: auto min-content;
   grid-template-rows: 390px min-content min-content;
-  grid-template-areas: 
-    "image image"
-    "title arrow"
-    "explore arrow";
+  grid-template-areas:
+    'image image'
+    'title arrow'
+    'explore arrow';
   gap: 4px;
   border-radius: 10px;
 }
@@ -48,14 +60,14 @@ defineProps({
   width: 100%;
   object-fit: cover;
   object-position: center;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .category-card__title {
   grid-area: title;
   margin-top: 10px;
 }
 .category-card__text {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .category-card__arrow {
   grid-area: arrow;

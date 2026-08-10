@@ -1,6 +1,6 @@
 <script setup>
-import { AppButton } from '@/shared/ui/base/app-button';
-import { Typography } from '@/shared/ui/base/typography';
+import { AppButton } from '@/shared/ui/base/app-button'
+import { Typography } from '@/shared/ui/base/typography'
 
 defineProps({
   title: String,
@@ -10,7 +10,7 @@ defineProps({
   link: Object,
   contentPosition: {
     type: String,
-    default: 'left'
+    default: 'left',
   },
 })
 </script>
@@ -18,15 +18,36 @@ defineProps({
 <template>
   <div class="slide">
     <div class="slide__image">
-      <img :src="image" alt="banner">
+      <img :src="image" alt="banner" />
     </div>
 
     <div :class="['slide__content', `slide__content--${contentPosition}`]">
-      <Typography tag="span" size="2xl" color="white" weight="medium" class="slide__category">{{ category }}</Typography>
-      <Typography tag="h1" size="3xl" color="white" weight="extra-bold" class="slide__title">{{ title }}</Typography>
-      <Typography tag="p" size="2xl" color="white" weight="medium" class="slide__text">{{ text }}</Typography>
+      <Typography
+        tag="span"
+        size="2xl"
+        color="white"
+        weight="medium"
+        class="slide__category"
+        >{{ category }}</Typography
+      >
+      <Typography
+        tag="h1"
+        size="3xl"
+        color="white"
+        weight="extra-bold"
+        class="slide__title"
+        >{{ title }}</Typography
+      >
+      <Typography
+        tag="p"
+        size="2xl"
+        color="white"
+        weight="medium"
+        class="slide__text"
+        >{{ text }}</Typography
+      >
 
-      <RouterLink :to="link" >
+      <RouterLink :to="link">
         <AppButton color="white">Shop now</AppButton>
       </RouterLink>
     </div>

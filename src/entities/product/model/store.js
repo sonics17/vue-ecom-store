@@ -1,25 +1,17 @@
-import { ref } from "vue";
-import { defineStore } from "pinia";
-import { productsApi } from "@/shared/api";
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
+import { productsApi } from '@/shared/api'
 
 export const useProductStore = defineStore('productStore', () => {
   const products = ref([])
   const isLoading = ref(false)
 
-  const fetchProducts = async(activeCategoryId, priceFrom, priceTo, colors, sizes) => {
-    console.log("FETCH")
+  const fetchProducts = async params => {
+    console.log('FETCHIING THESE PARAMS:', params)
     isLoading.value = true
 
     try {
-      const filters = {
-        categoryId: activeCategoryId,
-        priceFrom: priceFrom,
-        priceTo: priceTo,
-        colors: colors,
-        sizes: sizes
-      }
-
-      products.value = await productsApi.getProducts(filters)
+      products.value = await productsApi.getProducts(params)
     } catch (err) {
       console.error('Error:', err)
     } finally {
@@ -27,6 +19,5 @@ export const useProductStore = defineStore('productStore', () => {
     }
   }
 
-
-  return {products, isLoading, fetchProducts}
+  return { products, isLoading, fetchProducts }
 })

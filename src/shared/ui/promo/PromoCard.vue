@@ -1,28 +1,33 @@
 <script setup>
-import { Typography } from '../base/typography';
+import { Typography } from '../base/typography'
 
 defineProps({
   title: String,
   subtitle: String,
   text: String,
   image: String,
-  link: Object
+  link: Object,
 })
 </script>
 
 <template>
   <div class="promo-card">
-    <img :src="image" alt="promo" class="promo-card__image">
+    <img :src="image" alt="promo" class="promo-card__image" />
     <div class="promo-card__content">
-      <Typography tag="h3" size="md" color="white" weight="extra-bold">{{ title }}</Typography>
+      <Typography tag="h3" size="md" color="white" weight="extra-bold">{{
+        title
+      }}</Typography>
       <div class="promo-card__subtitle-wrapper">
-        <Typography tag="p" size="2xl" color="white" weight="extra-bold">{{ subtitle }}</Typography>
-        <Typography tag="p" size="sm" color="white" weight="medium">{{ text }}</Typography>
+        <Typography tag="p" size="2xl" color="white" weight="extra-bold">{{
+          subtitle
+        }}</Typography>
+        <Typography tag="p" size="sm" color="white" weight="medium">{{
+          text
+        }}</Typography>
       </div>
       <RouterLink :to="link" class="promo-card__link">Explore Items</RouterLink>
     </div>
   </div>
-
 </template>
 
 <style scoped>

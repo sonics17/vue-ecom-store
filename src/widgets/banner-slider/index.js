@@ -1,1 +1,1 @@
-export { default as BannerSlider } from './ui/BannerSlider.vue'; 
+export { default as BannerSlider } from './ui/BannerSlider.vue'

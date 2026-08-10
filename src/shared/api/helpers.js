@@ -1,3 +1,1 @@
-export function handleSupabaseResponse({data, error}) {
-  
-}
+export function handleSupabaseResponse({ data, error }) {}

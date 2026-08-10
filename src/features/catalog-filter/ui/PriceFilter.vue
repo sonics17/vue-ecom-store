@@ -1,96 +1,189 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
-import { CollapsibleSection } from '@/shared/ui/collapsible-section';
-import { useFilterStore } from '../model/store';
-import { watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, watch } from 'vue'
+import { CollapsibleSection } from '@/shared/ui/collapsible-section'
+import { RangeSlider } from '@/shared/ui/range-slider'
 
-const route = useRoute();
-const router = useRouter();
-
-const filterStore = useFilterStore();
-
-let debounceTimer = null;
-
-const updateRouteQuery = (queryChanges) => {
-  clearTimeout(debounceTimer);
-  
-  debounceTimer = setTimeout(() => {
-    console.log("PRICE FILTER SET")
-    router.push({
-      query: {
-        ...route.query,
-        ...queryChanges
-      }
-    });
-  }, 300);
-};
-
-
-const localMinPrice = computed({
-  get() {
-    return route.query.minPrice ? Number(route.query.minPrice) : filterStore.availableFilters.minPrice
+const props = defineProps({
+  availableMin: {
+    type: Number,
+    default: 0,
   },
-  set(newValue) {
-    updateRouteQuery({ minPrice: newValue });
-  }
-});
-
-const localMaxPrice = computed({
-  get() {
-    return route.query.maxPrice ? Number(route.query.maxPrice) : filterStore.availableFilters.maxPrice
+  availableMax: {
+    type: Number,
+    default: 1000000,
   },
-  set(newValue) {
-    updateRouteQuery({ maxPrice: newValue });
+  minPrice: {
+    type: Number,
+    default: null,
+  },
+  maxPrice: {
+    type: Number,
+    default: null,
+  },
+})
+
+const localPriceRange = ref([0, 0])
+
+const emit = defineEmits(['update-min', 'update-max'])
+
+const validateInput = inputType => {
+  localPriceRange.value[0] = Math.floor(localPriceRange.value[0])
+  localPriceRange.value[1] = Math.round(localPriceRange.value[1])
+
+  if (inputType === 'min') {
+    if (localPriceRange.value[0] > localPriceRange.value[1]) {
+      localPriceRange.value[0] = localPriceRange.value[1]
+    }
+    if (localPriceRange.value[0] < props.availableMin) {
+      localPriceRange.value[0] = props.availableMin
+    }
   }
-});
 
+  if (inputType === 'max') {
+    if (localPriceRange.value[1] < localPriceRange.value[0]) {
+      localPriceRange.value[1] = localPriceRange.value[0]
+    }
 
+    if (localPriceRange.value[1] > props.availableMax) {
+      localPriceRange.value[1] = props.availableMax
+    }
+  }
+}
+
+const applyPrice = inputType => {
+  if (inputType === 'min') emit('update-min', localPriceRange.value[0])
+  if (inputType === 'max') emit('update-max', localPriceRange.value[1])
+}
+
+const handleBlur = inputType => {
+  validateInput(inputType)
+  applyPrice(inputType)
+}
+
+watch(
+  [() => props.minPrice, () => props.maxPrice],
+  ([newMin, newMax]) => {
+    const min = newMin !== null ? newMin : props.availableMin
+    const max = newMax !== null ? newMax : props.availableMax
+
+    localPriceRange.value = [min, max]
+
+    validateInput('min')
+    validateInput('max')
+  },
+  { immediate: true },
+)
+
+watch(
+  [() => props.availableMin, () => props.availableMax],
+  ([newMin, newMax]) => {
+    const min = props.minPrice === null ? newMin : props.minPrice
+    const max = props.maxPrice === null ? newMax : props.maxPrice
+
+    localPriceRange.value = [min, max]
+    validateInput('min')
+    validateInput('max')
+  },
+  { immediate: true },
+)
+
+// watch(
+//   [() => localPriceRange.value[0], () => localPriceRange.value[1]],
+//   () => {
+//     console.log('localPriceRange!', localPriceRange.value)
+//   },
+//   { deep: true, immediate: true },
+// )
 </script>
-
 <template>
   <CollapsibleSection title="Price">
-    <div class="">from {{ localMinPrice}} to {{ localMaxPrice }}</div>
+    <RangeSlider
+      :min="availableMin"
+      :max="availableMax"
+      class="range-slider"
+      v-model="localPriceRange"
+      @change="applyPrice"
+    ></RangeSlider>
 
-    <div class="range-slider">
-      <input 
-        type="range" 
-        name="sliderMin" 
-        id="slider-min" 
-        :min="filterStore.availableFilters.minPrice ?? 0"
-        :max="filterStore.availableFilters.maxPrice ?? 0"
-        :value="localMinPrice"
-        @input="localMinPrice = Number($event.target.value)"
-
-      >
-      <input 
-        type="range" 
-        name="sliderMax" 
-        id="slider-max"
-        :min="filterStore.availableFilters.minPrice ?? 0"
-        :max="filterStore.availableFilters.maxPrice ?? 0"
-        :value="localMaxPrice"
-        @input="localMaxPrice = Number($event.target.value)"
-      >
-    </div>
-
-    <div class="manual-price-selectors">
-      <!-- <input 
-        type="number" 
-        name="manualMin" 
-        id="manual-min"
-        v-model="localMinPrice"
-      >
-      <input 
-        type="number" 
-        name="manualMax" 
-        id="manual-max"
-        v-model="localMaxPrice"
-      > -->
+    <div class="price-filter__inputs">
+      <div class="price-filter__input-wrapper">
+        <span class="price-filter__price-prefix">$</span>
+        <input
+          type="number"
+          name="manualMin"
+          id="manual-min"
+          :min="availableMin ?? 0"
+          :max="availableMax ?? 0"
+          v-model="localPriceRange[0]"
+          @blur="handleBlur('min')"
+          @keyup.enter="handleBlur('min')"
+          class="price-filter__input"
+          :style="{ width: `${String(localPriceRange[0]).length}ch` }"
+        />
+      </div>
+      <div class="price-filter__input-wrapper">
+        <span class="price-filter__price-prefix">$</span>
+        <input
+          type="number"
+          name="manualMax"
+          id="manual-max"
+          :min="availableMin ?? 0"
+          :max="availableMax ?? 0"
+          v-model="localPriceRange[1]"
+          @blur="handleBlur('max')"
+          @keyup.enter="handleBlur('max')"
+          class="price-filter__input"
+          :style="{ width: `${String(localPriceRange[1]).length}ch` }"
+        />
+      </div>
     </div>
   </CollapsibleSection>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+.range-slider {
+  margin-bottom: 32px;
+}
 
+.price-filter__inputs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.price-filter__input-wrapper {
+  border: 1px solid var(--color-medium-gray);
+  border-radius: 8px;
+  padding: 7px;
+  min-width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex-basis: 50%;
+}
+
+.price-filter__input {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+
+  &[type='number'] {
+    -moz-appearance: textfield;
+    appearance: none;
+  }
+}
 </style>

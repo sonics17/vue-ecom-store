@@ -1,18 +1,15 @@
 <script setup>
-import { useProductStore } from '@/entities/product/model/store';
-import { ProductCard } from '@/entities/product';
-import { onMounted } from 'vue';
+import { useProductStore } from '@/entities/product/model/store'
+import { ProductCard } from '@/entities/product'
+import { onMounted } from 'vue'
 
-const productStore = useProductStore();
+const productStore = useProductStore()
 </script>
 
 <template>
   <div v-if="!productStore.isLoading" class="products-catalog">
     <div class="products-catalog__items">
-      <template
-        v-for="product in productStore.products"
-        :key="product.id"
-      >
+      <template v-for="product in productStore.products" :key="product.id">
         <ProductCard
           v-for="productVariant in product.product_color_variants"
           :key="productVariant.id"

@@ -1,15 +1,15 @@
 <script setup>
-import { Typography } from '@/shared/ui/base/typography';
-import IconFilter from '@/shared/assets/images/filter.svg';
-
-
+import { Typography } from '@/shared/ui/base/typography'
+import IconFilter from '@/shared/assets/images/filter.svg'
 </script>
 
 <template>
   <aside class="catalog-sidebar">
     <div class="catalog-sidebar__title filter-title-layout">
-      <Typography tag="h2" size="lg" weight="medium" color="secondary">Filter</Typography>
-      <img :src="IconFilter" alt="">
+      <Typography tag="h2" size="lg" weight="medium" color="secondary"
+        >Filter</Typography
+      >
+      <img :src="IconFilter" alt="" />
     </div>
 
     <div class="catalog-sidebar__section filter-section-layout">
@@ -20,7 +20,6 @@ import IconFilter from '@/shared/assets/images/filter.svg';
       <slot name="filters"></slot>
     </div>
   </aside>
-  
 </template>
 
 <style scoped>

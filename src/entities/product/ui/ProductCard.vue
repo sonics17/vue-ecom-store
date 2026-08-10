@@ -1,32 +1,40 @@
 <script setup>
-import { Typography } from '@/shared/ui/base/typography';
-import ProductPreviewGallery from './ProductPreviewGallery.vue';
-import { breakpointsAntDesign } from '@vueuse/core';
+import { Typography } from '@/shared/ui/base/typography'
+import ProductPreviewGallery from './ProductPreviewGallery.vue'
+import { formatPrice } from '@/shared/lib/formatPrice'
 
 const props = defineProps({
   id: Number,
   name: String,
   price: Number,
   images: Array,
-  brand: String
+  brand: String,
 })
-
-const formattedPrice = (price) => {
-  return price.toFixed(2)
-}
 </script>
 
 <template>
-  <RouterLink class="product-card" :to="{name: 'product', params: {id: id}}">
-
+  <RouterLink
+    class="product-card"
+    :to="{ name: 'product', params: { id: id } }"
+  >
     <div class="product-card__image">
       <ProductPreviewGallery :images="images" />
     </div>
 
-    <Typography tag="h3" weight="bold" class="product-card__title">{{name}}</Typography>
-    <Typography tag="span" size="sm" color="secondary" class="product-card__brand">{{brand}}</Typography>
+    <Typography tag="h3" weight="bold" class="product-card__title">{{
+      name
+    }}</Typography>
+    <Typography
+      tag="span"
+      size="sm"
+      color="secondary"
+      class="product-card__brand"
+      >{{ brand }}</Typography
+    >
     <div class="product-card__price">
-      <Typography tag="span" size="sm" weight="medium">${{formattedPrice(price)}}</Typography>
+      <Typography tag="span" size="sm" weight="medium">{{
+        formatPrice(price)
+      }}</Typography>
     </div>
   </RouterLink>
 </template>
@@ -36,10 +44,10 @@ const formattedPrice = (price) => {
   display: grid;
   grid-template-columns: auto min-content;
   grid-template-rows: 370px min-content;
-  grid-template-areas: 
-    "image image"
-    "title price"
-    "brand price";
+  grid-template-areas:
+    'image image'
+    'title price'
+    'brand price';
   gap: 5px;
   border-radius: 10px;
 }

@@ -1,9 +1,9 @@
 <script setup>
-import { useDeviceBreakpoints } from "@/shared/lib/composables/useDeviceBreakpoints.js";
-import HeaderDesktop from "./desktop/HeaderDesktop.vue";
-import HeaderMobile from "./mobile/HeaderMobile.vue";
+import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints.js'
+import HeaderDesktop from './desktop/HeaderDesktop.vue'
+import HeaderMobile from './mobile/HeaderMobile.vue'
 
-const { isDesktop } = useDeviceBreakpoints();
+const { isDesktop } = useDeviceBreakpoints()
 </script>
 
 <template>

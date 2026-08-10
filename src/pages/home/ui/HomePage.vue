@@ -1,23 +1,25 @@
 <script setup>
-import { useCategoryStore } from '@/entities/category/model/store';
-import { AppContainer } from '@/shared/ui/base/app-container';
-import { PromoBanner, PromoSection } from '@/shared/ui/promo';
-import { BannerSlider } from '@/widgets/banner-slider';
-import { CategoriesSection } from '@/widgets/categories-section';
-import { homePageCategoriesSections } from '../model/homePageCategoriesSections';
-import { buildHomeCategoriesSections } from '../model/buildHomeCategoriesSections';
-import { computed } from 'vue';
-import { ReviewsSection } from '@/widgets/reviews-section';
-import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints';
+import { useCategoryStore } from '@/entities/category/model/store'
+import { AppContainer } from '@/shared/ui/base/app-container'
+import { PromoBanner, PromoSection } from '@/shared/ui/promo'
+import { BannerSlider } from '@/widgets/banner-slider'
+import { CategoriesSection } from '@/widgets/categories-section'
+import { homePageCategoriesSections } from '../model/homePageCategoriesSections'
+import { buildHomeCategoriesSections } from '../model/buildHomeCategoriesSections'
+import { computed } from 'vue'
+import { ReviewsSection } from '@/widgets/reviews-section'
+import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
 
-const {isDesktop} = useDeviceBreakpoints();
+const { isDesktop } = useDeviceBreakpoints()
 
-const categoryStore = useCategoryStore();
+const categoryStore = useCategoryStore()
 
 const categoriesSections = computed(() => {
-  return buildHomeCategoriesSections(homePageCategoriesSections, categoryStore.allCategories)
+  return buildHomeCategoriesSections(
+    homePageCategoriesSections,
+    categoryStore.allCategories,
+  )
 })
-
 </script>
 <template>
   <BannerSlider class="banner-slider" v-if="isDesktop"></BannerSlider>
@@ -36,7 +38,7 @@ const categoriesSections = computed(() => {
   </AppContainer>
 </template>
 <style lang="scss" scoped>
-@use "@/shared/styles/_variables.scss" as *;
+@use '@/shared/styles/_variables.scss' as *;
 
 .banner-slider {
   margin-bottom: 73px;
