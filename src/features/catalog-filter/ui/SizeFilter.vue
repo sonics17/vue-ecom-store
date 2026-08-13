@@ -1,36 +1,26 @@
 <script setup>
 import CollapsibleSection from '@/shared/ui/collapsible-section/CollapsibleSection.vue'
-import { useFilterStore } from '../model/store'
 import { Typography } from '@/shared/ui/base/typography'
-import { computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 
-const route = useRoute()
-const router = useRouter()
-
-const filterStore = useFilterStore()
-
-const selectedSizes = computed(() => {
-  if (route.query.size && route.query.size.length) {
-    const ids = route.query.size.split(',').map(Number)
-    return new Set(ids)
-  }
-  return new Set()
+const props = defineProps({
+  availableSizes: {
+    type: Array,
+    default: () => [],
+  },
+  sizes: {
+    type: Array,
+    default: () => [],
+  },
 })
 
+const emit = defineEmits(['update'])
+
 const toggleSize = id => {
-  const curentSizes = route.query.size
-    ? new Set(route.query.size.split(',').map(Number))
-    : new Set()
+  const newSizes = props.sizes.includes(id)
+    ? props.sizes.filter(sizeId => sizeId !== id)
+    : [...props.sizes, id]
 
-  if (selectedSizes.value.has(id)) {
-    selectedSizes.value.delete(id)
-  } else {
-    selectedSizes.value.add(id)
-  }
-  query.size = selectedSizes.value
-
-  router.push({ query: query })
+  emit('update', newSizes)
 }
 </script>
 
@@ -39,8 +29,11 @@ const toggleSize = id => {
     <div class="size-filter__list">
       <div
         class="size-filter__item"
-        v-for="size in filterStore.availableFilters.sizes"
+        v-for="size in availableSizes"
         @click="toggleSize(size.id)"
+        :class="{
+          'size-filter__item--selected': sizes.includes(size.id),
+        }"
       >
         <Typography size="xs" weight="semi-bold">{{ size.name }}</Typography>
       </div>
@@ -64,7 +57,8 @@ const toggleSize = id => {
   cursor: pointer;
 
   &--selected {
-    border: 2px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
+    border-color: transparent;
+    outline: 2px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
   }
 }
 </style>
