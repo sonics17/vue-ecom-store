@@ -1,54 +1,59 @@
 <script setup>
 import { CollapsibleSection } from '@/shared/ui/collapsible-section'
-import { useFilterStore } from '../model/store'
 import { Typography } from '@/shared/ui/base/typography'
+import { ref, watch } from 'vue'
 
-const filterStore = useFilterStore()
+const props = defineProps({
+  availableColors: {
+    type: Array,
+    default: () => [],
+  },
+  colors: {
+    type: Array,
+    default: () => [],
+  },
+})
 
-// const selectedColors = computed(() => {
-//   if (route.query.color && route.query.color.length) {
-//     const ids = route.query.color.split(',').map(Number)
-//     return new Set(ids)
-//   }
-//   return new Set()
-// })
+const emit = defineEmits(['update'])
 
-const toggleColors = ids => {
-  const currentIds = new Set(filterStore.selectedFilters.colors)
+// const selectedColors = ref([])
 
-  for (const id of ids) {
-    if (currentIds.has(id)) {
-      currentIds.delete(id)
-    } else {
-      currentIds.add(id)
-    }
-  }
+const toggleColor = id => {
+  // const index = selectedColors.value.indexOf(id)
 
-  if (currentIds.size > 0) {
-    query.color = [...currentIds].join(',')
-  } else {
-    delete query.color
-  }
+  // if (index === -1) {
+  //   selectedColors.value.push(id)
+  // } else {
+  //   selectedColors.value.splice(index, 1)
+  // }
+
+  const newColors = props.colors.includes(id)
+    ? props.colors.filter(colorId => colorId !== id)
+    : [...props.colors, id]
+
+  emit('update', newColors)
 }
+
+// watch(
+//   () => props.colors,
+//   colors => {
+//     selectedColors.value = [...colors]
+//   },
+//   { immediate: true },
+// )
 </script>
 
 <template>
   <CollapsibleSection title="Color">
     <div class="colors-filter__grid">
-      <!-- <div
-        class="color-filter__item"
-        v-for="color in filterStore.allFilters.colors"
-        :key="color.id"
-        @click="toggleColors(color.childrenIds)"
-        :class="{
-          'color-filter__item--selected': selectedColors.has(color.id),
-        }"
-      > -->
       <div
         class="color-filter__item"
-        v-for="color in filterStore.allFilters.colors"
+        v-for="color in props.availableColors"
         :key="color.id"
-        @click="toggleColors(color.childrenIds)"
+        @click="toggleColor(color.id)"
+        :class="{
+          'color-filter__item--selected': colors.includes(color.id),
+        }"
       >
         <div
           class="color-filter__color"
@@ -87,10 +92,10 @@ const toggleColors = ids => {
   cursor: pointer;
   padding: 7px 5px;
   border: 2px solid transparent;
-  transition: all 0.2s ease-out;
 
   &--selected {
-    border: 2px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
+    outline: 2px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
+    border-radius: 8px;
   }
 }
 .color-filter__color {
