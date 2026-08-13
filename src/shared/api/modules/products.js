@@ -25,7 +25,8 @@ export const productsApi = {
     }
 
     if (params.maxPrice) {
-      query = query.lte('price', params.maxPrice)
+      const extendedMaxPrice = params.maxPrice + 0.99
+      query = query.lte('price', extendedMaxPrice)
     }
 
     if (params.colors && params.colors.length > 0) {
@@ -48,7 +49,7 @@ export const productsApi = {
     return data
   },
 
-  async getFiltersByCategory(categoryIds) {
+  async getAvailableFilters(categoryIds, search) {
     let query = supabase.from('products').select(
       `
       price,
@@ -63,6 +64,10 @@ export const productsApi = {
 
     if (categoryIds.length) {
       query = query.in('category_id', categoryIds)
+    }
+
+    if (search) {
+      query = query.like('name', `%${search}%`)
     }
 
     const { data, error } = await query
