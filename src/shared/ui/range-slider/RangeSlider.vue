@@ -86,37 +86,13 @@ const onPointerMove = event => {
 const onPointerUp = () => {
   if (activeThumbIndex === null) return
 
-  const inputType = activeThumbIndex === 0 ? 'min' : 'max'
-
   activeThumbIndex = null
 
   document.removeEventListener('pointermove', onPointerMove)
   document.removeEventListener('pointerup', onPointerUp)
 
-  emit('change', inputType)
+  emit('change')
 }
-
-// watch(
-//   [
-//     () => props.min,
-//     () => props.max,
-//     () => modelValue.value[0],
-//     () => modelValue.value[1],
-//   ],
-//   () => {
-//     console.log('props.min WATCH', props.min)
-//     console.log('props.max WATCH', props.max)
-//     console.log('modelMIN WATCH', modelValue.value[0])
-//     console.log('modelMAX WATCH', modelValue.value[1])
-//   },
-// )
-
-// onMounted(() => {
-//   console.log('props.min onMounted', props.min)
-//   console.log('props.max onMounted', props.max)
-//   console.log('modelMIN onMounted', modelValue.value[0])
-//   console.log('modelMAX onMounted', modelValue.value[1])
-// })
 </script>
 
 <template>
