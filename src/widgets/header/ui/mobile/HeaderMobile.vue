@@ -1,11 +1,11 @@
 <script setup>
-import { onUnmounted, ref, watch } from 'vue'
+import { ref } from 'vue'
 import { AppButton } from '@/shared/ui/base/app-button'
 import { IconHeart, IconUser, IconCart, IconSearch } from '@/shared/ui/icons'
 import { AppContainer } from '@/shared/ui/base/app-container'
 import logoUrl from '@/shared/assets/images/logo.svg'
 import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
-import Drawer from './Drawer.vue'
+import MobileMenuDrawer from './MobileMenuDrawer.vue'
 
 const { isMobile } = useDeviceBreakpoints()
 
@@ -14,18 +14,6 @@ const isOpen = ref(false)
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
 }
-
-watch(isOpen, isDrawerOpen => {
-  if (isDrawerOpen) {
-    document.body.classList.add('drawer-open')
-  } else {
-    document.body.classList.remove('drawer-open')
-  }
-})
-
-onUnmounted(() => {
-  document.body.classList.remove('drawer-open')
-})
 </script>
 
 <template>
@@ -56,7 +44,7 @@ onUnmounted(() => {
       </button>
     </AppContainer>
 
-    <Drawer v-model:is-open="isOpen"></Drawer>
+    <MobileMenuDrawer v-model:is-open="isOpen"></MobileMenuDrawer>
   </header>
 </template>
 
@@ -143,12 +131,5 @@ onUnmounted(() => {
       transform: rotate(-45deg);
     }
   }
-}
-</style>
-
-<style>
-.drawer-open {
-  overflow: hidden;
-  height: 100dvh;
 }
 </style>

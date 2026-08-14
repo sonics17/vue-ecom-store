@@ -1,6 +1,7 @@
 <script setup>
 import { CategoryLink } from '@/entities/category'
 import { useCategoryStore } from '@/entities/category/model/store'
+import { AppDrawer } from '@/shared/ui/base/app-drawer'
 import { ChevronToggle } from '@/shared/ui/base/chevron-toggle'
 import { Typography } from '@/shared/ui/base/typography'
 import { IconCart, IconHeart, IconUser } from '@/shared/ui/icons'
@@ -32,7 +33,7 @@ const isDropdownOpen = categoryId => {
 </script>
 
 <template>
-  <div class="drawer" :class="{ 'drawer--open': isOpen }">
+  <AppDrawer v-model:is-open="isOpen">
     <nav class="drawer-nav">
       <Typography
         tag="span"
@@ -126,29 +127,10 @@ const isDropdownOpen = categoryId => {
         <Typography tag="span" color="secondary">My Account</Typography>
       </RouterLink>
     </div>
-  </div>
+  </AppDrawer>
 </template>
 
 <style lang="scss" scoped>
-.drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 70px 60px 70px 30px;
-  background-color: var(--color-white);
-  overflow: scroll;
-  z-index: 800;
-  box-sizing: border-box;
-  transform: translateX(100%);
-  transition: all 0.3s ease-in;
-  visibility: hidden;
-}
-.drawer--open {
-  transform: translateX(0);
-  visibility: visible;
-}
 .drawer-nav__root-link,
 .drawer-nav__sub-link,
 .drawer-nav__title {
