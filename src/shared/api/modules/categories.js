@@ -1,7 +1,7 @@
 import { supabase } from '../supabase'
 
 export const categoriesApi = {
-  async getCategories() {
+  getCategories: async () => {
     const { data, error } = await supabase.from('categories').select('*')
 
     if (error) throw error

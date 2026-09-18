@@ -34,103 +34,108 @@ const isDropdownOpen = categoryId => {
 
 <template>
   <AppDrawer v-model:is-open="isOpen">
-    <nav class="drawer-nav">
-      <Typography
-        tag="span"
-        size="lg"
-        color="secondary"
-        class="drawer-nav__title"
-      >
-        Categories
-      </Typography>
-
-      <ul class="drawer-nav__root-list">
-        <li
-          v-for="rootCategory in categoryStore.rootCategories"
-          :key="rootCategory.id"
-          class="drawer-nav__root-item"
+    <div class="mobile-drawer-wrapper">
+      <nav class="drawer-nav">
+        <Typography
+          tag="span"
+          size="lg"
+          color="secondary"
+          class="drawer-nav__title"
         >
-          <div class="link-container">
-            <CategoryLink
-              :root-slug="rootCategory.slug"
-              color="secondary"
-              @click="closeDrawer"
-              class="drawer-nav__root-link"
-            >
-              {{ rootCategory.name }}
-            </CategoryLink>
+          Categories
+        </Typography>
 
-            <ChevronToggle
-              v-if="rootCategory.subCategories.length"
-              :is-open="isDropdownOpen(rootCategory.id)"
-              class="chevron"
-              @toggle="toggleCategory(rootCategory.id)"
-            ></ChevronToggle>
-          </div>
-
-          <Transition name="expand">
-            <ul
-              class="drawer-nav__sub-list"
-              v-if="
-                rootCategory.subCategories.length &&
-                isDropdownOpen(rootCategory.id)
-              "
-            >
-              <li
-                v-for="subCategory in rootCategory.subCategories"
-                :key="subCategory.id"
-                class="drawer-nav__sub-item"
+        <ul class="drawer-nav__root-list">
+          <li
+            v-for="rootCategory in categoryStore.rootCategories"
+            :key="rootCategory.id"
+            class="drawer-nav__root-item"
+          >
+            <div class="link-container">
+              <CategoryLink
+                :root-slug="rootCategory.slug"
+                color="secondary"
+                @click="closeDrawer"
+                class="drawer-nav__root-link"
               >
-                <CategoryLink
-                  :root-slug="rootCategory.slug"
-                  :slug="subCategory.slug"
-                  color="secondary"
-                  @click="closeDrawer"
-                  class="drawer-nav__sub-link"
+                {{ rootCategory.name }}
+              </CategoryLink>
+
+              <ChevronToggle
+                v-if="rootCategory.subCategories.length"
+                :is-open="isDropdownOpen(rootCategory.id)"
+                class="chevron"
+                @toggle="toggleCategory(rootCategory.id)"
+              ></ChevronToggle>
+            </div>
+
+            <Transition name="expand">
+              <ul
+                class="drawer-nav__sub-list"
+                v-if="
+                  rootCategory.subCategories.length &&
+                  isDropdownOpen(rootCategory.id)
+                "
+              >
+                <li
+                  v-for="subCategory in rootCategory.subCategories"
+                  :key="subCategory.id"
+                  class="drawer-nav__sub-item"
                 >
-                  {{ subCategory.name }}
-                </CategoryLink>
-              </li>
-            </ul>
-          </Transition>
-        </li>
-      </ul>
-    </nav>
+                  <CategoryLink
+                    :root-slug="rootCategory.slug"
+                    :slug="subCategory.slug"
+                    color="secondary"
+                    @click="closeDrawer"
+                    class="drawer-nav__sub-link"
+                  >
+                    {{ subCategory.name }}
+                  </CategoryLink>
+                </li>
+              </ul>
+            </Transition>
+          </li>
+        </ul>
+      </nav>
 
-    <span class="divider"></span>
+      <span class="divider"></span>
 
-    <div class="drawer-actions">
-      <RouterLink
-        :to="{ name: 'catalog' }"
-        class="drawer-actions__link"
-        @click="closeDrawer"
-      >
-        <IconHeart></IconHeart>
-        <Typography tag="span" color="secondary">Favourites</Typography>
-      </RouterLink>
+      <div class="drawer-actions">
+        <RouterLink
+          :to="{ name: 'catalog' }"
+          class="drawer-actions__link"
+          @click="closeDrawer"
+        >
+          <IconHeart></IconHeart>
+          <Typography tag="span" color="secondary">Favourites</Typography>
+        </RouterLink>
 
-      <RouterLink
-        :to="{ name: 'catalog' }"
-        class="drawer-actions__link"
-        @click="closeDrawer"
-      >
-        <IconCart></IconCart>
-        <Typography tag="span" color="secondary">Cart</Typography>
-      </RouterLink>
+        <RouterLink
+          :to="{ name: 'catalog' }"
+          class="drawer-actions__link"
+          @click="closeDrawer"
+        >
+          <IconCart></IconCart>
+          <Typography tag="span" color="secondary">Cart</Typography>
+        </RouterLink>
 
-      <RouterLink
-        :to="{ name: 'catalog' }"
-        class="drawer-actions__link"
-        @click="closeDrawer"
-      >
-        <IconUser></IconUser>
-        <Typography tag="span" color="secondary">My Account</Typography>
-      </RouterLink>
+        <RouterLink
+          :to="{ name: 'catalog' }"
+          class="drawer-actions__link"
+          @click="closeDrawer"
+        >
+          <IconUser></IconUser>
+          <Typography tag="span" color="secondary">My Account</Typography>
+        </RouterLink>
+      </div>
     </div>
   </AppDrawer>
 </template>
 
 <style lang="scss" scoped>
+.mobile-drawer-wrapper {
+  padding: 20px 30px;
+}
 .drawer-nav__root-link,
 .drawer-nav__sub-link,
 .drawer-nav__title {

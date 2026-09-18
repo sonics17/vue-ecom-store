@@ -1,6 +1,6 @@
 <script setup>
-import CollapsibleSection from '@/shared/ui/collapsible-section/CollapsibleSection.vue'
 import { Typography } from '@/shared/ui/base/typography'
+import { FilterCollapsible } from '@/shared/ui/filter-collapsible'
 
 const props = defineProps({
   availableSizes: {
@@ -25,7 +25,7 @@ const toggleSize = id => {
 </script>
 
 <template>
-  <CollapsibleSection title="Size">
+  <FilterCollapsible title="Size">
     <div class="size-filter__list">
       <div
         class="size-filter__item"
@@ -38,7 +38,7 @@ const toggleSize = id => {
         <Typography size="xs" weight="semi-bold">{{ size.name }}</Typography>
       </div>
     </div>
-  </CollapsibleSection>
+  </FilterCollapsible>
 </template>
 
 <style lang="scss" scoped>

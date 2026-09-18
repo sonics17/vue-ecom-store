@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { productsApi } from '@/shared/api'
+import { adaptAvailableFilters } from './filtersAdapter'
 
 export const useCatalogStore = defineStore('catalogStore', () => {
   const categoryIds = ref([])
@@ -22,62 +23,7 @@ export const useCatalogStore = defineStore('catalogStore', () => {
     categoryIds.value = ids
   }
 
-  const getColorIds = baseColorId => {
-    return allColors.value
-      .filter(
-        color =>
-          color.id === baseColorId || color.base_color_id === baseColorId,
-      )
-      .map(color => color.id)
-  }
-
-  const buildAvailableFilters = productsData => {
-    const prices = productsData.map(product => product.price)
-    const minPrice = prices.length ? Math.min(...prices) : 0
-    const maxPrice = prices.length ? Math.max(...prices) : 0
-
-    const availableColorsIds = new Set(
-      productsData.flatMap(product => {
-        return product.product_color_variants.map(variant => variant.colors.id)
-      }),
-    )
-
-    const availableBaseColors = allColors.value
-      .filter(color => color.base_color_id === null)
-      .map(baseColor => {
-        const colorIds = getColorIds(baseColor.id)
-        const isAvailable = colorIds.some(id => availableColorsIds.has(id))
-
-        if (!isAvailable) return null
-
-        return {
-          ...baseColor,
-          colorIds,
-        }
-      })
-      .filter(Boolean)
-
-    const allSizes = productsData
-      .flatMap(product => {
-        return product.product_color_variants.flatMap(variant =>
-          variant.products_stock.map(ps => ps.sizes),
-        )
-      })
-      .filter(Boolean)
-
-    const uniqueSizes = Array.from(
-      new Map(allSizes.map(size => [size.id, size])).values(),
-    ).sort((a, b) => a.id - b.id)
-
-    availableFilters.value = {
-      minPrice: Math.floor(minPrice),
-      maxPrice: Math.round(maxPrice),
-      colors: availableBaseColors,
-      sizes: uniqueSizes,
-    }
-  }
-
-  const fetchAvailableFilters = async () => {
+  const loadAvailableFilters = async () => {
     try {
       if (!allColors.value.length) {
         const colors = await productsApi.getColors()
@@ -88,7 +34,10 @@ export const useCatalogStore = defineStore('catalogStore', () => {
         categoryIds.value,
       )
 
-      buildAvailableFilters(rawFiltersData)
+      availableFilters.value = adaptAvailableFilters(
+        rawFiltersData,
+        allColors.value,
+      )
     } catch (error) {
       console.error('Error:', error)
     }
@@ -98,6 +47,6 @@ export const useCatalogStore = defineStore('catalogStore', () => {
     categoryIds,
     availableFilters,
     setCategoryIds,
-    fetchAvailableFilters,
+    loadAvailableFilters,
   }
 })

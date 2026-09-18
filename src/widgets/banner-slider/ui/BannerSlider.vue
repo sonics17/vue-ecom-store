@@ -4,7 +4,7 @@ import { Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import BannerSlide from './BannerSlide.vue'
-import { slides } from '../data/slides'
+import { slides } from '../data/slides.js'
 
 const modules = [Pagination, Autoplay]
 </script>

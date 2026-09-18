@@ -10,10 +10,10 @@
 .app-container {
   max-width: 1380px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 12px;
 
-  @media (max-width: $breakpoint-tablet) {
-    padding: 0 12px;
+  @media (min-width: $breakpoint-tablet) {
+    padding: 0 40px;
   }
 }
 </style>

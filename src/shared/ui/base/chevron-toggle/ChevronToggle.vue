@@ -1,5 +1,5 @@
 <script setup>
-import ChevronRight from '@/shared/assets/images/chevron-right.svg'
+import { IconChevronRight } from '../../icons'
 
 defineProps({
   isOpen: {
@@ -11,12 +11,10 @@ defineProps({
 
 <template>
   <span @click="$emit('toggle')" class="chevron-wrapper">
-    <img
-      :src="ChevronRight"
-      alt="arrow"
+    <IconChevronRight
       class="chevron"
       :class="{ 'chevron--open': isOpen }"
-    />
+    ></IconChevronRight>
   </span>
 </template>
 
@@ -32,6 +30,9 @@ defineProps({
 .chevron {
   transition: transform 0.3s ease;
   transform: rotate(0deg);
+  color: var(--color-secondary);
+  width: 7px;
+  height: 13px;
 }
 
 .chevron--open {

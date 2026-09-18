@@ -33,8 +33,8 @@ const props = defineProps({
   transition: all 0.2s;
   text-transform: capitalize;
   padding: 1rem 1.2rem;
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semi-bold);
   color: var(--color-white);
 }
 

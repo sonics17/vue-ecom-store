@@ -4,7 +4,7 @@ import { categoriesApi } from '@/shared/api'
 
 export const useCategoryStore = defineStore('categoryStore', () => {
   const allCategories = ref([])
-  const isLoading = ref(false)
+  const isLoading = ref(true)
 
   const rootCategories = computed(() => {
     return allCategories.value
@@ -64,8 +64,10 @@ export const useCategoryStore = defineStore('categoryStore', () => {
     return subCategory ? subCategory.id : null
   }
 
-  const fetchCategories = async () => {
+  const loadCategories = async () => {
+    console.log('loadCategories beforre retuen')
     if (allCategories.value.length > 0) return
+    console.log('loadCategories')
 
     isLoading.value = true
 
@@ -82,7 +84,7 @@ export const useCategoryStore = defineStore('categoryStore', () => {
     allCategories,
     rootCategories,
     isLoading,
-    fetchCategories,
+    loadCategories,
     getCategoryIdsBySlug,
     getCurrentCategoryIdBySlug,
   }

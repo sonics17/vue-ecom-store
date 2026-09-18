@@ -1,5 +1,5 @@
 <script setup>
-import { Typography } from '@/shared/ui/base/typography/index.js'
+import { Typography } from '@/shared/ui/base/typography'
 import CategoryCard from './CategoryCard.vue'
 import { IconArrow } from '@/shared/ui/icons'
 

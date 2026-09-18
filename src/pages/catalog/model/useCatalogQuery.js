@@ -1,5 +1,9 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import {
+  DEFAULT_SORT_OPTION,
+  VALID_SORT_VALUES,
+} from '@/features/catalog-sort/model/constants'
 
 export const useCatalogQuery = () => {
   const route = useRoute()
@@ -35,11 +39,29 @@ export const useCatalogQuery = () => {
     return value
   })
 
+  const sort = computed(() => {
+    if (route.query.sort === undefined) return DEFAULT_SORT_OPTION
+
+    const value = route.query.sort
+
+    return value
+  })
+
+  const page = computed(() => {
+    if (route.query.page === undefined) return 1
+
+    const value = Number(route.query.page)
+
+    return value
+  })
+
   const setPriceRange = ({ min, max }) => {
     const query = { ...route.query }
 
     query.minPrice = String(min)
     query.maxPrice = String(max)
+
+    query.page = String(1)
 
     router.push({ query })
   }
@@ -48,21 +70,35 @@ export const useCatalogQuery = () => {
     const query = { ...route.query }
 
     query.colors = colors.join(',')
-    console.log(colors)
+
+    query.page = String(1)
 
     router.push({ query })
   }
 
   const setSizes = sizes => {
     const query = { ...route.query }
-    console.log(sizes)
 
     query.sizes = sizes.join(',')
+
+    query.page = String(1)
 
     router.push({ query })
   }
 
-  const normalizeQuery = (query, availableFilters) => {
+  const setSort = sort => {
+    const query = { ...route.query }
+    query.sort = sort
+    router.push({ query })
+  }
+
+  const setPage = page => {
+    const query = { ...route.query }
+    query.page = String(page)
+    router.push({ query })
+  }
+
+  const normalizeQuery = (query, availableFilters, totalPages) => {
     const normalizedQuery = { ...query }
 
     let queryMinPrice = normalizedQuery.minPrice
@@ -90,11 +126,17 @@ export const useCatalogQuery = () => {
       queryMaxPrice = Math.ceil(Number(queryMaxPrice))
     }
 
-    if (queryMinPrice !== null && queryMinPrice <= availableFilters.minPrice) {
+    if (
+      (queryMinPrice !== null && queryMinPrice <= availableFilters.minPrice) ||
+      (queryMinPrice !== null && queryMinPrice > availableFilters.maxPrice)
+    ) {
       queryMinPrice = null
     }
 
-    if (queryMaxPrice !== null && queryMaxPrice >= availableFilters.maxPrice) {
+    if (
+      (queryMaxPrice !== null && queryMaxPrice >= availableFilters.maxPrice) ||
+      (queryMaxPrice !== null && queryMaxPrice < availableFilters.minPrice)
+    ) {
       queryMaxPrice = null
     }
 
@@ -166,6 +208,22 @@ export const useCatalogQuery = () => {
       delete normalizedQuery.colors
     }
 
+    let querySort = normalizedQuery.sort
+
+    if (
+      !querySort ||
+      !VALID_SORT_VALUES.includes(querySort) ||
+      querySort === DEFAULT_SORT_OPTION
+    ) {
+      delete normalizedQuery.sort
+    }
+
+    let queryPage = normalizedQuery.page
+
+    if (!Number.isFinite(Number(queryPage)) || Number(queryPage <= 1)) {
+      delete normalizedQuery.page
+    }
+
     return normalizedQuery
   }
 
@@ -178,9 +236,13 @@ export const useCatalogQuery = () => {
     maxPrice,
     colors,
     sizes,
+    sort,
+    page,
     setPriceRange,
     setColors,
     setSizes,
+    setSort,
+    setPage,
     normalizeQuery,
     isSameQuery,
   }

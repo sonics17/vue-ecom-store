@@ -1,62 +1,94 @@
 import { supabase } from '../supabase'
 
+const SORT_MAP = {
+  price_asc: { column: 'price', ascending: true },
+  price_desc: { column: 'price', ascending: false },
+}
+
+export const LIMIT = 12
+
 export const productsApi = {
-  async getProducts(params) {
-    let query = supabase.from('products').select(`
-      *,
-      product_color_variants!inner (
-        id,
-        image_url,
-        colors!inner (id, name, hex),
-        products_stock!inner (
-          stock,
-          sizes!inner (id, name)
-        )
+  getCatalogProducts: async params => {
+    let query = supabase.from('product_color_variants').select(
+      `
+      id,
+      product_id,
+      image_url,
+      colors!inner (id, name, hex),
+      products_stock!inner (
+        stock,
+        sizes!inner (id, name)
       ),
-      brands (id, name)
-    `)
+      products!inner (
+        id, name, price, category_id, brands (id, name)
+      )
+    `,
+      { count: 'exact' },
+    )
 
     if (params.categoryIds && params.categoryIds.length > 0) {
-      query = query.in('category_id', params.categoryIds)
+      query = query.in('products.category_id', params.categoryIds)
     }
 
-    if (params.minPrice) {
-      query = query.gte('price', params.minPrice)
+    if (params.minPrice !== null && params.minPrice !== undefined) {
+      query = query.gte('products.price', params.minPrice)
     }
 
-    if (params.maxPrice) {
+    if (params.maxPrice !== null && params.maxPrice !== undefined) {
       const extendedMaxPrice = params.maxPrice + 0.99
-      query = query.lte('price', extendedMaxPrice)
+      query = query.lte('products.price', extendedMaxPrice)
     }
 
     if (params.colors && params.colors.length > 0) {
-      query = query.in('product_color_variants.colors.id', params.colors)
+      query = query.in('colors.id', params.colors)
     }
 
     if (params.sizes && params.sizes.length > 0) {
-      query = query.in(
-        'product_color_variants.products_stock.sizes.id',
-        params.sizes,
-      )
+      query = query.in('products_stock.sizes.id', params.sizes)
     }
 
-    query = query.gt('product_color_variants.products_stock.stock', 0)
+    query = query.gt('products_stock.stock', 0)
 
-    const { data, error, status } = await query
+    if (params.sort && params.sort !== 'default') {
+      query = query.order(`products(${SORT_MAP[params.sort].column})`, {
+        ascending: SORT_MAP[params.sort].ascending,
+      })
+    } else {
+      query = query.order('id', { ascending: true })
+    }
+
+    const page = params.page || 1
+    const from = LIMIT * (page - 1)
+    const to = LIMIT * page - 1
+    query = query.range(from, to)
+
+    const { data, count, error, status } = await query
+
+    if (error && status === 416) {
+      return {
+        products: [],
+        totalCount: count,
+        isOutOfRange: true,
+      }
+    }
 
     if (error) throw error
 
-    return data
+    return {
+      products: data,
+      totalCount: count,
+      isOutOfRange: false,
+    }
   },
 
-  async getAvailableFilters(categoryIds, search) {
+  getAvailableFilters: async categoryIds => {
     let query = supabase.from('products').select(
       `
       price,
       product_color_variants(
         colors (id, name, hex, base_color_id),
         products_stock (
-          sizes (id, name)
+          sizes (id, name, position)
         )
       )
     `,
@@ -66,10 +98,6 @@ export const productsApi = {
       query = query.in('category_id', categoryIds)
     }
 
-    if (search) {
-      query = query.like('name', `%${search}%`)
-    }
-
     const { data, error } = await query
 
     if (error) throw error
@@ -77,8 +105,58 @@ export const productsApi = {
     return data
   },
 
-  async getColors() {
+  getColors: async () => {
     const { data, error } = await supabase.from('colors').select('*')
+
+    if (error) throw error
+
+    return data
+  },
+
+  getProductVariant: async variantId => {
+    const { data, error } = await supabase
+      .from('product_color_variants')
+      .select(
+        `
+        id, product_id, image_url, 
+        products(
+          id, name, price, description, features,
+          brands (id, name)
+        ), 
+        colors (id, name, hex), 
+        products_stock (
+          stock, 
+          sizes (id, name, position)
+        )`,
+      )
+      .eq('id', variantId)
+      .order('sizes(position)', {
+        referencedTable: 'products_stock',
+        ascending: true,
+      })
+      .single()
+
+    if (error) throw error
+
+    return data
+  },
+
+  getProductVariants: async (productId, currentVariantId) => {
+    const { data, error } = await supabase
+      .from('product_color_variants')
+      .select(
+        `
+        id,
+        product_id,
+        colors (id, name, hex), 
+        products_stock (
+          stock, 
+          sizes (id, name)
+        )
+      `,
+      )
+      .eq('product_id', productId)
+      .neq('id', currentVariantId)
 
     if (error) throw error
 

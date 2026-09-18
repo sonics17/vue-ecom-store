@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { CollapsibleSection } from '@/shared/ui/collapsible-section'
+import { FilterCollapsible } from '@/shared/ui/filter-collapsible'
 import { RangeSlider } from '@/shared/ui/range-slider'
 
 const props = defineProps({
@@ -24,11 +24,11 @@ const props = defineProps({
 
 const localPriceRange = ref([0, 0])
 
-const emit = defineEmits(['update-min', 'update-max'])
+const emit = defineEmits(['update'])
 
 const validateInput = inputType => {
   localPriceRange.value[0] = Math.floor(localPriceRange.value[0])
-  localPriceRange.value[1] = Math.round(localPriceRange.value[1])
+  localPriceRange.value[1] = Math.ceil(localPriceRange.value[1])
 
   if (inputType === 'min') {
     if (localPriceRange.value[0] > localPriceRange.value[1]) {
@@ -50,14 +50,16 @@ const validateInput = inputType => {
   }
 }
 
-const applyPrice = inputType => {
-  if (inputType === 'min') emit('update-min', localPriceRange.value[0])
-  if (inputType === 'max') emit('update-max', localPriceRange.value[1])
+const applyPrice = () => {
+  emit('update', {
+    min: localPriceRange.value[0],
+    max: localPriceRange.value[1],
+  })
 }
 
 const handleBlur = inputType => {
   validateInput(inputType)
-  applyPrice(inputType)
+  applyPrice()
 }
 
 watch(
@@ -86,17 +88,9 @@ watch(
   },
   { immediate: true },
 )
-
-// watch(
-//   [() => localPriceRange.value[0], () => localPriceRange.value[1]],
-//   () => {
-//     console.log('localPriceRange!', localPriceRange.value)
-//   },
-//   { deep: true, immediate: true },
-// )
 </script>
 <template>
-  <CollapsibleSection title="Price">
+  <FilterCollapsible title="Price">
     <RangeSlider
       :min="availableMin"
       :max="availableMax"
@@ -137,7 +131,7 @@ watch(
         />
       </div>
     </div>
-  </CollapsibleSection>
+  </FilterCollapsible>
 </template>
 
 <style lang="scss" scoped>

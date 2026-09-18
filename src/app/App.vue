@@ -16,8 +16,8 @@ const currentLayout = computed(() => layouts[route.meta.layout] || MainLayout)
 
 const categoryStore = useCategoryStore()
 
-onMounted(async () => {
-  await categoryStore.fetchCategories()
+onMounted(() => {
+  categoryStore.loadCategories()
 })
 </script>
 

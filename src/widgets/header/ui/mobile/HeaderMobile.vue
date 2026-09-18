@@ -11,8 +11,8 @@ const { isMobile } = useDeviceBreakpoints()
 
 const isOpen = ref(false)
 
-const toggleMenu = () => {
-  isOpen.value = !isOpen.value
+const openMenu = () => {
+  isOpen.value = true
 }
 </script>
 
@@ -35,11 +35,7 @@ const toggleMenu = () => {
         <AppButton variant="icon" color="gray"><IconCart /></AppButton>
       </div>
 
-      <button
-        @click="toggleMenu"
-        :class="{ 'header__burger-button--open': isOpen }"
-        class="header__burger-button"
-      >
+      <button @click="openMenu" class="header__burger-button">
         <span></span>
       </button>
     </AppContainer>
@@ -86,7 +82,6 @@ const toggleMenu = () => {
   padding: 0;
   flex-shrink: 0;
   position: relative;
-  z-index: 999;
 
   span {
     display: block;
@@ -94,7 +89,6 @@ const toggleMenu = () => {
     height: 2px;
     background-color: var(--color-secondary);
     border-radius: 5px;
-    transition: opacity 0.2s ease-in-out;
   }
 
   &::before,
@@ -106,7 +100,6 @@ const toggleMenu = () => {
     background-color: var(--color-secondary);
     border-radius: 5px;
     left: 10px;
-    transition: all 0.3s ease-in-out;
   }
 
   &::before {
@@ -114,22 +107,6 @@ const toggleMenu = () => {
   }
   &::after {
     top: 28px;
-  }
-
-  &--open {
-    span {
-      opacity: 0;
-    }
-
-    &::before {
-      top: 21px;
-      transform: rotate(45deg);
-    }
-
-    &::after {
-      top: 21px;
-      transform: rotate(-45deg);
-    }
   }
 }
 </style>

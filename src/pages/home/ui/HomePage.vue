@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import { useCategoryStore } from '@/entities/category/model/store'
 import { AppContainer } from '@/shared/ui/base/app-container'
 import { PromoBanner, PromoSection } from '@/shared/ui/promo'
@@ -6,7 +7,6 @@ import { BannerSlider } from '@/widgets/banner-slider'
 import { CategoriesSection } from '@/widgets/categories-section'
 import { homePageCategoriesSections } from '../model/homePageCategoriesSections'
 import { buildHomeCategoriesSections } from '../model/buildHomeCategoriesSections'
-import { computed } from 'vue'
 import { ReviewsSection } from '@/widgets/reviews-section'
 import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
 
