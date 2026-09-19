@@ -15,10 +15,10 @@ const props = defineProps({
 
 const emit = defineEmits(['update'])
 
-const toggleColor = id => {
-  const newColors = props.colors.includes(id)
-    ? props.colors.filter(colorId => colorId !== id)
-    : [...props.colors, id]
+const onChange = (id, checked) => {
+  const newColors = checked
+    ? [...props.colors, id]
+    : props.colors.filter(colorId => colorId !== id)
 
   emit('update', newColors)
 }
@@ -27,17 +27,14 @@ const toggleColor = id => {
 <template>
   <FilterCollapsible title="Color">
     <div class="colors-filter__grid">
-      <div
+      <label
         class="color-filter__item"
         v-for="color in props.availableColors"
         :key="color.id"
-        @click="toggleColor(color.id)"
-        :class="{
-          'color-filter__item--selected': colors.includes(color.id),
-        }"
       >
-        <div
+        <input
           class="color-filter__color"
+          type="checkbox"
           :style="{
             background:
               color.hex === 'multicolor'
@@ -45,15 +42,17 @@ const toggleColor = id => {
                 : `#${color.hex}`,
             border: color.hex === 'ffffff' ? '2px solid #F4F1F1' : 'none',
           }"
-        ></div>
+          :checked="colors.includes(color.id)"
+          @change="onChange(color.id, $event.target.checked)"
+        />
         <Typography
-          class="color-filter__text"
+          class="color-filter__name"
           color="secondary"
           weight="semi-bold"
           size="xs"
           >{{ color.name }}</Typography
         >
-      </div>
+      </label>
     </div>
   </FilterCollapsible>
 </template>
@@ -64,6 +63,7 @@ const toggleColor = id => {
   grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
   gap: 20px 15px;
 }
+
 .color-filter__item {
   display: flex;
   flex-direction: column;
@@ -72,21 +72,20 @@ const toggleColor = id => {
   align-items: center;
   cursor: pointer;
   padding: 7px 5px;
-  border: 2px solid transparent;
+  border-radius: 8px;
 
-  &--selected {
+  &:has(input:checked) {
     outline: 2px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
-    border-radius: 8px;
   }
 }
+
 .color-filter__color {
+  appearance: none;
   width: 36px;
   height: 36px;
-  box-sizing: border-box;
+  cursor: pointer;
+  margin: 0;
   border-radius: 12px;
-}
-.color-filter__text {
-  text-align: center;
-  line-height: 1;
+  box-sizing: border-box;
 }
 </style>

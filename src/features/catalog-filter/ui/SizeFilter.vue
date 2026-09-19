@@ -15,10 +15,10 @@ const props = defineProps({
 
 const emit = defineEmits(['update'])
 
-const toggleSize = id => {
-  const newSizes = props.sizes.includes(id)
-    ? props.sizes.filter(sizeId => sizeId !== id)
-    : [...props.sizes, id]
+const onChange = (id, checked) => {
+  const newSizes = checked
+    ? [...props.sizes, id]
+    : props.sizes.filter(sizeId => sizeId !== id)
 
   emit('update', newSizes)
 }
@@ -27,16 +27,15 @@ const toggleSize = id => {
 <template>
   <FilterCollapsible title="Size">
     <div class="size-filter__list">
-      <div
-        class="size-filter__item"
-        v-for="size in availableSizes"
-        @click="toggleSize(size.id)"
-        :class="{
-          'size-filter__item--selected': sizes.includes(size.id),
-        }"
-      >
+      <label class="size-filter__item" v-for="size in availableSizes">
+        <input
+          type="checkbox"
+          class="size-filter__size"
+          :checked="sizes.includes(size.id)"
+          @change="onChange(size.id, $event.target.checked)"
+        />
         <Typography size="xs" weight="semi-bold">{{ size.name }}</Typography>
-      </div>
+      </label>
     </div>
   </FilterCollapsible>
 </template>
@@ -48,6 +47,7 @@ const toggleSize = id => {
   gap: 15px 20px;
 }
 .size-filter__item {
+  position: relative;
   min-height: 30px;
   padding: 7px 18px;
   box-sizing: border-box;
@@ -56,9 +56,24 @@ const toggleSize = id => {
   border-radius: 8px;
   cursor: pointer;
 
-  &--selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:has(input:checked) {
     border-color: transparent;
     outline: 2px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
   }
+}
+
+.size-filter__size {
+  appearance: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
 }
 </style>
