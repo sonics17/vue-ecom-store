@@ -3,8 +3,8 @@ import { useProductStore } from '@/entities/product/model/store'
 import { AppContainer } from '@/shared/ui/base/app-container'
 import { Typography } from '@/shared/ui/base/typography'
 import { storeToRefs } from 'pinia'
-import { computed, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import ProductGallery from './ProductGallery.vue'
 import { AppButton } from '@/shared/ui/base/app-button'
 import {
@@ -17,7 +17,6 @@ import {
 import { formatPrice } from '@/shared/lib/formatPrice'
 
 const route = useRoute()
-const router = useRouter()
 
 const productStore = useProductStore()
 const { currentProduct, productVariants, isLoadingDetails, isLoadingVariants } =
@@ -45,15 +44,11 @@ const selectedSize = ref(null)
 watch(
   () => route.params.id,
   async id => {
+    selectedSize.value = null
     await productStore.loadProductDetails(id)
-    console.log(currentProduct.value)
   },
   { immediate: true },
 )
-
-watch(selectedSize, size => {
-  console.log(size)
-})
 </script>
 
 <template>
