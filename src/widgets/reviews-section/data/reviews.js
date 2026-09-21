@@ -30,7 +30,7 @@ export const reviews = [
     id: 4,
     userName: 'Sonia Gorbunova',
     reviewText:
-      'Catapultam habeo. Nisi pecuniam omnem mihi dabis, ad caput tuum saxum immane mittam',
+      'Facilis descensus Averno; noctes atque dies patet atri ianua Ditis; sed revocare gradum superasque evadere ad auras, hoc opus, hic labor est.',
     rating: 5,
     imageUrl:
       'https://ecpyitcppizkhzenuwlx.supabase.co/storage/v1/object/public/users/review-4.webp',
