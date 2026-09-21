@@ -36,11 +36,22 @@ const props = defineProps({
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semi-bold);
   color: var(--color-white);
+
+  &:disabled {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.6;
+  }
 }
 
 .app-button--solid.app-button--purple {
   color: var(--color-white);
   background-color: var(--color-purple);
+
+  &:disabled {
+    color: var(--color-primary);
+    background-color: var(--color-medium-gray);
+  }
 }
 
 .app-button--solid.app-button--white {
