@@ -20,6 +20,8 @@ export const adaptProductDetails = rawVariant => {
       name: size.sizes.name,
       stock: size.sizes.stock,
       position: size.sizes.position,
+      isSizeAvailable: size.stock > 0,
     })),
+    isAvailable: rawVariant.products_stock.some(stock => stock.stock > 0),
   }
 }
