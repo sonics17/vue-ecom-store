@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useCategoryStore } from '@/entities/category/model/store'
-import { SearchProducts } from '@/features/search-products'
 import logoUrl from '@/shared/assets/images/logo.svg'
 import { AppButton } from '@/shared/ui/base/app-button/index.js'
 import { AppContainer } from '@/shared/ui/base/app-container/index.js'
@@ -50,8 +49,6 @@ const activeCategory = ref(null)
           </Transition>
         </div>
       </nav>
-
-      <SearchProducts class="header__search" />
 
       <div class="header__actions">
         <AppButton variant="icon" color="gray"><IconHeart /></AppButton>

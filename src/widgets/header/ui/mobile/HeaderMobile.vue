@@ -23,12 +23,8 @@ const openMenu = () => {
         <img :src="logoUrl" alt="Logo" />
       </RouterLink>
 
-      <AppButton variant="icon" color="gray"><IconSearch /></AppButton>
-
       <div class="header__actions">
-        <AppButton v-if="!isMobile" variant="icon" color="gray"
-          ><IconHeart
-        /></AppButton>
+        <AppButton variant="icon" color="gray"><IconHeart /></AppButton>
         <AppButton v-if="!isMobile" variant="icon" color="gray"
           ><IconUser
         /></AppButton>
