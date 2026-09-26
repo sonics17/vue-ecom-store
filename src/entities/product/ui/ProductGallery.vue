@@ -70,7 +70,11 @@ const visibleImages = computed(() => {
   <div class="gallery">
     <div class="gallery__desktop" v-if="isDesktop">
       <div class="gallery__controls" v-if="!isDefaultImage">
-        <button class="gallery__button gallery__button--prev" @click="showPrev">
+        <button
+          class="gallery__button gallery__button--prev"
+          @click="showPrev"
+          :disabled="currentImageIndex === 0"
+        >
           <IconChevronRight
             class="gallery__button-icon gallery__button-icon--up"
           />
@@ -91,7 +95,11 @@ const visibleImages = computed(() => {
           </div>
         </div>
 
-        <button class="gallery__button gallery__button--next" @click="showNext">
+        <button
+          class="gallery__button gallery__button--next"
+          @click="showNext"
+          :disabled="currentImageIndex === images.length - 1"
+        >
           <IconChevronRight
             class="gallery__button-icon gallery__button-icon--down"
           />
@@ -218,7 +226,15 @@ const visibleImages = computed(() => {
   &:active {
     background-color: var(--color-secondary);
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+    background-color: var(--color-white);
+    color: var(--color-primary);
+  }
 }
+
 .gallery__main-image {
   flex: 1;
   overflow: hidden;
