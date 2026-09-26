@@ -87,7 +87,7 @@ export const productsApi = {
       price,
       product_color_variants(
         colors (id, name, hex, base_color_id),
-        products_stock (
+        products_stock!inner (
           sizes (id, name, position)
         )
       )
@@ -97,6 +97,8 @@ export const productsApi = {
     if (categoryIds.length) {
       query = query.in('category_id', categoryIds)
     }
+
+    query = query.gt('product_color_variants.products_stock.stock', 0)
 
     const { data, error } = await query
 
