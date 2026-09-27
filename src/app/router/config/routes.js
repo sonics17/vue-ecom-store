@@ -18,15 +18,15 @@ export default [
     meta: { layout: 'MainLayout' },
   },
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/pages/auth-login'),
+    path: '/sign-in',
+    name: 'signIn',
+    component: () => import('@/pages/sign-in'),
     meta: { layout: 'AuthLayout' },
   },
   {
-    path: '/register',
-    name: 'register',
-    component: () => import('@/pages/auth-register'),
+    path: '/sign-up',
+    name: 'signUp',
+    component: () => import('@/pages/sign-up'),
     meta: { layout: 'AuthLayout' },
   },
 ]

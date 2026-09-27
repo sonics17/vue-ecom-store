@@ -12,8 +12,8 @@ import { AppButton } from '@/shared/ui/base/app-button'
       </RouterLink>
 
       <div class="header__auth">
-        <AppButton :to="{ name: 'login' }" variant="outline">Login</AppButton>
-        <AppButton :to="{ name: 'register' }" variant="outline"
+        <AppButton :to="{ name: 'signIn' }" variant="outline">Login</AppButton>
+        <AppButton :to="{ name: 'signUp' }" variant="outline"
           >Sign Up</AppButton
         >
       </div>
