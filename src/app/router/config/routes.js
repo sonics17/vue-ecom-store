@@ -17,4 +17,16 @@ export default [
     component: () => import('@/pages/product-details'),
     meta: { layout: 'MainLayout' },
   },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/pages/auth-login'),
+    meta: { layout: 'AuthLayout' },
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/pages/auth-register'),
+    meta: { layout: 'AuthLayout' },
+  },
 ]
