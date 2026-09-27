@@ -43,7 +43,6 @@ const getColorStyle = hex => {
         :style="getColorStyle(variant.hex)"
         class="color-selector__color"
         :class="{
-          'color-selector__color--selected': variant.id === currentId,
           'color-selector__color--unavailable':
             !variant.isAvailable && variant.id !== currentId,
         }"
@@ -78,7 +77,9 @@ const getColorStyle = hex => {
   border-radius: 50%;
   box-sizing: border-box;
 
-  &--selected {
+  &.router-link-exact-active {
+    cursor: default;
+    pointer-events: none;
     position: relative;
 
     &::after {
@@ -94,6 +95,7 @@ const getColorStyle = hex => {
     position: relative;
     opacity: 0.6;
     overflow: hidden;
+
     &::after {
       content: '';
       position: absolute;
