@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
   variant: {
     type: String,
@@ -8,15 +10,30 @@ const props = defineProps({
     type: String,
     default: 'purple',
   },
+  to: {
+    type: [Object, String],
+    default: null,
+  },
+})
+
+const tag = computed(() => {
+  return props.to ? 'router-link' : 'button'
+})
+
+const buttonType = computed(() => {
+  return tag.value === 'button' ? 'button' : null
 })
 </script>
 
 <template>
-  <button
+  <component
+    :is="tag"
+    :to="to"
+    :type="buttonType"
     :class="['app-button', `app-button--${variant}`, `app-button--${color}`]"
   >
     <slot></slot>
-  </button>
+  </component>
 </template>
 
 <style lang="scss" scoped>
@@ -41,6 +58,13 @@ const props = defineProps({
     cursor: default;
     pointer-events: none;
     opacity: 0.6;
+  }
+
+  &.router-link-exact-active {
+    cursor: default;
+    pointer-events: none;
+    color: var(--color-white);
+    background-color: var(--color-purple);
   }
 }
 
