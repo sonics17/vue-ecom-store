@@ -45,6 +45,10 @@ const openMenu = () => {
 
 .header {
   padding: 10px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--color-white);
 }
 .header__container {
   display: flex;
