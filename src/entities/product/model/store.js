@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { productsApi } from '@/shared/api'
+import { productsApi } from '../api/products-api'
 import { adaptProductDetails } from './adaptProductDetails'
 import { adaptProducts } from './adaptProducts'
 import { adaptVariants } from './adaptVariants'

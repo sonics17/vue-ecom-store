@@ -1,4 +1,4 @@
-import { supabase } from '../supabase'
+import { supabase } from '@/shared/api/supabase'
 
 export const categoriesApi = {
   getCategories: async () => {

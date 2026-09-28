@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { productsApi } from '@/shared/api'
+import { productsApi } from '@/entities/product/api/products-api'
 import { adaptAvailableFilters } from './filtersAdapter'
 
 export const useCatalogStore = defineStore('catalogStore', () => {

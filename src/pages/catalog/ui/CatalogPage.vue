@@ -14,7 +14,7 @@ import { CatalogSort } from '@/features/catalog-sort'
 import { IconFilter } from '@/shared/ui/icons'
 import { Typography } from '@/shared/ui/base/typography'
 import { Pagination } from '@/shared/ui/base/pagination'
-import { LIMIT } from '@/shared/api'
+import { LIMIT } from '@/entities/product/api/products-api'
 import { AppButton } from '@/shared/ui/base/app-button'
 
 const route = useRoute()

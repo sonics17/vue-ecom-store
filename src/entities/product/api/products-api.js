@@ -1,4 +1,4 @@
-import { supabase } from '../supabase'
+import { supabase } from '@/shared/api/supabase'
 
 const SORT_MAP = {
   price_asc: { column: 'price', ascending: true },
