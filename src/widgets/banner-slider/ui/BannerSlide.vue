@@ -46,10 +46,9 @@ defineProps({
         class="slide__text"
         >{{ text }}</Typography
       >
-
-      <RouterLink :to="link">
-        <AppButton color="white">Shop now</AppButton>
-      </RouterLink>
+      <AppButton :to="link" color="white" class="slide__button"
+        >Shop now</AppButton
+      >
     </div>
   </div>
 </template>
@@ -91,10 +90,15 @@ defineProps({
   text-align: right;
   align-items: end;
 }
+
 .slide__content--left {
   justify-self: start;
   padding-left: 70px;
   text-align: left;
   align-items: start;
+}
+
+.slide__button {
+  font-weight: var(--font-weight-bold);
 }
 </style>

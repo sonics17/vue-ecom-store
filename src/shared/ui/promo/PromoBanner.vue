@@ -27,7 +27,12 @@ import { AppButton } from '../base/app-button'
         In our journey to improve everyday fashion, euphoria presents EVERYDAY
         wear range - Comfortable & Affordable fashion 24/7
       </Typography>
-      <AppButton color="white">Shop now</AppButton>
+      <AppButton
+        :to="{ name: 'catalog' }"
+        color="white"
+        class="promo-banner__button"
+        >Shop now</AppButton
+      >
     </div>
 
     <div class="promo-banner__right">
@@ -101,5 +106,8 @@ import { AppButton } from '../base/app-button'
 }
 .promo-banner__text {
   line-height: 1.4;
+}
+.promo-banner__button {
+  font-weight: var(--font-weight-bold);
 }
 </style>
