@@ -12,8 +12,16 @@ import { AppButton } from '@/shared/ui/base/app-button'
       </RouterLink>
 
       <div class="header__auth">
-        <AppButton :to="{ name: 'signIn' }" variant="outline">Login</AppButton>
-        <AppButton :to="{ name: 'signUp' }" variant="outline"
+        <AppButton
+          :to="{ name: 'signIn' }"
+          variant="outline"
+          class="header__button"
+          >Login</AppButton
+        >
+        <AppButton
+          :to="{ name: 'signUp' }"
+          variant="outline"
+          class="header__button"
           >Sign Up</AppButton
         >
       </div>
@@ -21,21 +29,41 @@ import { AppButton } from '@/shared/ui/base/app-button'
   </header>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@use '@/shared/styles/_variables.scss' as *;
+
 .header {
-  padding: 20px 0;
-  border-bottom: 1px solid var(--color-medium-gray);
+  padding: 10px 0;
+  border-bottom: none;
   position: relative;
   background-color: var(--color-white);
+
+  @media (min-width: $breakpoint-mobile) {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--color-medium-gray);
+  }
 }
 
 .header__container {
   display: flex;
   align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
+
 .header__auth {
   display: flex;
-  gap: 30px;
+  gap: 10px;
+  @media (min-width: $breakpoint-tablet) {
+    gap: 30px;
+  }
+}
+.header__button {
+  padding: 0.8rem 1rem;
+
+  @media (min-width: $breakpoint-mobile) {
+    padding: 1.2rem 1rem;
+  }
 }
 </style>
