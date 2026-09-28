@@ -3,21 +3,23 @@ import { HeaderAuth } from '@/widgets/header-auth'
 </script>
 
 <template>
-  <div class="app-layout">
+  <div class="auth-layout">
     <HeaderAuth></HeaderAuth>
-    <main class="app-layout__main">
+    <main class="auth-layout__main">
       <slot></slot>
     </main>
   </div>
 </template>
 
 <style scoped>
-.app-layout {
+.auth-layout {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
 }
-.app-layout__main {
+.auth-layout__main {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 </style>
