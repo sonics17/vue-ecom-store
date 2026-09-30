@@ -31,6 +31,7 @@ const model = defineModel()
           :value="size.id"
           v-model="model"
           :disabled="!size.isSizeAvailable"
+          class="size-selector__radio"
         />
         <Typography
           tag="span"
@@ -63,10 +64,12 @@ const model = defineModel()
   align-items: center;
   flex-wrap: wrap;
 }
+
 .size-selector__size {
   cursor: pointer;
   position: relative;
-  input {
+
+  .size-selector__radio {
     position: absolute;
     width: 0;
     height: 0;
@@ -74,6 +77,7 @@ const model = defineModel()
     padding: 0;
     appearance: none;
   }
+
   .size-selector__size-name {
     display: flex;
     height: 2rem;
@@ -84,7 +88,7 @@ const model = defineModel()
     border: 1px solid var(--color-medium-gray);
     border-radius: 12px;
   }
-  input:checked + .size-selector__size-name {
+  .size-selector__radio:checked + .size-selector__size-name {
     background-color: var(--color-primary);
     border-color: var(--color-primary);
     color: var(--color-white);
@@ -93,6 +97,7 @@ const model = defineModel()
   &--unavailable {
     cursor: default;
     pointer-events: none;
+
     .size-selector__size-name {
       opacity: 0.5;
       position: relative;

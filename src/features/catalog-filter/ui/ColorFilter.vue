@@ -74,7 +74,7 @@ const onChange = (id, checked) => {
   padding: 7px 5px;
   border-radius: 8px;
 
-  &:has(input:checked) {
+  &:has(.color-filter__color:checked) {
     outline: 2px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
   }
 }

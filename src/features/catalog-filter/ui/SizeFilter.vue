@@ -60,7 +60,7 @@ const onChange = (id, checked) => {
   align-items: center;
   justify-content: center;
 
-  &:has(input:checked) {
+  &:has(.size-filter__size:checked) {
     border-color: transparent;
     outline: 2px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
   }
