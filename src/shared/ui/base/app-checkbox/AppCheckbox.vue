@@ -3,12 +3,24 @@ import { IconCheckMark } from '../../icons'
 import { Typography } from '../typography'
 
 const model = defineModel()
+
+defineOptions({
+  inheritAttrs: false,
+})
+
+defineEmits(['change'])
 </script>
 
 <template>
   <label class="app-checkbox">
-    <input v-model="model" type="checkbox" class="app-checkbox__input" />
-    <span class="app-checkbox__visual">
+    <input
+      v-model="model"
+      :disabled="$attrs['disabled']"
+      type="checkbox"
+      class="app-checkbox__checkbox"
+      @change="$emit('change')"
+    />
+    <span class="app-checkbox__custom">
       <IconCheckMark class="app-checkbox__checkmark"></IconCheckMark>
     </span>
     <Typography
@@ -28,8 +40,12 @@ const model = defineModel()
   align-items: center;
   gap: 10px;
   cursor: pointer;
+
+  &:has(.app-checkbox__checkbox:disabled) {
+    cursor: default;
+  }
 }
-.app-checkbox__input {
+.app-checkbox__checkbox {
   appearance: none;
   position: absolute;
   width: 1px;
@@ -41,7 +57,7 @@ const model = defineModel()
   outline: none;
 }
 
-.app-checkbox__visual {
+.app-checkbox__custom {
   width: 18px;
   height: 18px;
   border: 1px solid var(--color-primary);
@@ -52,19 +68,26 @@ const model = defineModel()
   justify-content: center;
 }
 
-.app-checkbox__input:checked + .app-checkbox__visual {
+.app-checkbox__checkbox:checked + .app-checkbox__custom {
   background-color: var(--color-primary);
+
   .app-checkbox__checkmark {
     opacity: 1;
     color: var(--color-white);
   }
 }
 
+.app-checkbox__checkbox:disabled + .app-checkbox__custom {
+  background-color: var(--color-light-gray);
+  border-color: var(--color-medium-gray);
+  cursor: default;
+}
+
 .app-checkbox__checkmark {
   opacity: 0;
 }
-.app-checkbox__input:focus-visible + .app-checkbox__visual {
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-  border-color: var(--color-primary, #007bff);
+
+.app-checkbox__checkbox:focus-visible + .app-checkbox__custom {
+  outline: auto -webkit-focus-ring-color;
 }
 </style>

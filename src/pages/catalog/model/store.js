@@ -15,15 +15,20 @@ export const useCatalogStore = defineStore('catalogStore', () => {
 
   const allColors = ref([])
 
-  const setCategoryIds = ids => {
-    if (!ids) {
-      categoryIds.value = []
-      return
-    }
-    categoryIds.value = ids
-  }
+  // const filtersController = ref(null)
 
-  const loadAvailableFilters = async () => {
+  const isLoading = ref(false)
+
+  const loadAvailableFilters = async signal => {
+    // if (filtersController.value) {
+    //   filtersController.value.abort()
+    // }
+
+    // filtersController.value = new AbortController()
+    // const signal = filtersController.value.signal
+
+    isLoading.value = true
+
     try {
       if (!allColors.value.length) {
         const colors = await productsApi.getColors()
@@ -32,6 +37,7 @@ export const useCatalogStore = defineStore('catalogStore', () => {
 
       const rawFiltersData = await productsApi.getAvailableFilters(
         categoryIds.value,
+        signal,
       )
 
       availableFilters.value = adaptAvailableFilters(
@@ -40,7 +46,23 @@ export const useCatalogStore = defineStore('catalogStore', () => {
       )
     } catch (error) {
       console.error('Error:', error)
+    } finally {
+      if (!signal?.aborted) {
+        isLoading.value = false
+      }
+      // if (filtersController.value?.signal === signal) {
+      //   filtersController.value = null
+      //   isLoading.value = false
+      // }
     }
+  }
+
+  const setCategoryIds = ids => {
+    if (!ids) {
+      categoryIds.value = []
+      return
+    }
+    categoryIds.value = ids
   }
 
   return {

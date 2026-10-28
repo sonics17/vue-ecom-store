@@ -69,7 +69,6 @@ watch(isOpen, newValue => {
   border: 1px solid var(--color-medium-gray);
   color: var(--color-secondary) !important;
   width: 100%;
-  font-size: var(--font-size-lg);
 }
 .catalog-drawer__button-icon {
   width: 17px;

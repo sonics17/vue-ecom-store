@@ -19,4 +19,16 @@
   --color-light-gray: #f6f6f6;
   --color-purple: #8a33fd;
   --color-medium-gray: #bebcbd;
+  --color-red: #ee1d52;
+  --color-purple-opacity-50: color-mix(
+    in srgb,
+    var(--color-purple) 50%,
+    transparent
+  );
+  --color-purple-opacity-10: color-mix(
+    in srgb,
+    var(--color-purple) 10%,
+    transparent
+  );
+  --color-red-opacity-10: color-mix(in srgb, var(--color-red) 10%, transparent);
 }

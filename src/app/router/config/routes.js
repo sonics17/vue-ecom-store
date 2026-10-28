@@ -29,4 +29,22 @@ export default [
     component: () => import('@/pages/sign-up'),
     meta: { layout: 'AuthLayout' },
   },
+  {
+    path: '/forgot-password',
+    name: 'forgotPassword',
+    component: () => import('@/pages/forgot-password'),
+    meta: { layout: 'AuthLayout' },
+  },
+  {
+    path: '/update-password',
+    name: 'updatePassword',
+    component: () => import('@/pages/update-password'),
+    meta: { layout: 'AuthLayout' },
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: () => import('@/pages/account'),
+    meta: { layout: 'MainLayout' },
+  },
 ]

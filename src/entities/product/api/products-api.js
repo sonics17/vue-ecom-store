@@ -8,7 +8,7 @@ const SORT_MAP = {
 export const LIMIT = 12
 
 export const productsApi = {
-  getCatalogProducts: async params => {
+  getCatalogProducts: async (params, signal) => {
     let query = supabase.from('product_color_variants').select(
       `
       id,
@@ -62,6 +62,10 @@ export const productsApi = {
     const to = LIMIT * page - 1
     query = query.range(from, to)
 
+    if (signal) {
+      query = query.abortSignal(signal)
+    }
+
     const { data, count, error, status } = await query
 
     if (error && status === 416) {
@@ -81,7 +85,7 @@ export const productsApi = {
     }
   },
 
-  getAvailableFilters: async categoryIds => {
+  getAvailableFilters: async (categoryIds, signal) => {
     let query = supabase.from('products').select(
       `
       price,
@@ -100,6 +104,10 @@ export const productsApi = {
 
     query = query.gt('product_color_variants.products_stock.stock', 0)
 
+    if (signal) {
+      query = query.abortSignal(signal)
+    }
+
     const { data, error } = await query
 
     if (error) throw error
@@ -107,7 +115,7 @@ export const productsApi = {
     return data
   },
 
-  getColors: async () => {
+  getColors: async signal => {
     const { data, error } = await supabase.from('colors').select('*')
 
     if (error) throw error

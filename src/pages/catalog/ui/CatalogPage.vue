@@ -2,7 +2,7 @@
 import { useCategoryStore } from '@/entities/category/model/store'
 import { useProductStore } from '@/entities/product/model/store'
 import { AppContainer } from '@/shared/ui/base/app-container'
-import { computed, watch } from 'vue'
+import { computed, onWatcherCleanup, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ProductCatalog } from '@/widgets/product-catalog'
 import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
@@ -45,17 +45,36 @@ const onPageUpdate = page => {
   window.scrollTo({ top: 0 })
 }
 
+let isInitialLoading = true
+
 watch(
   [
     () => route.params.rootCategory,
     () => route.params.subCategory,
     () => route.query,
+    () => categoryStore.isLoaded,
   ],
-  async ([newRoot, newSub, newQuery], [oldRoot, oldSub, oldQuery]) => {
-    if (newRoot !== oldRoot || newSub !== oldSub) {
+  async ([newRoot, newSub, newQuery, categoriesReady], [oldRoot, oldSub]) => {
+    if (!categoriesReady) return
+
+    const filtersController = new AbortController()
+    onWatcherCleanup(() => {
+      filtersController.abort()
+    })
+
+    const productsController = new AbortController()
+    onWatcherCleanup(() => {
+      productsController.abort()
+    })
+
+    const isCategoryChanged =
+      isInitialLoading || newRoot !== oldRoot || newSub !== oldSub
+
+    if (isCategoryChanged) {
       const categoryIds = categoryStore.getCategoryIdsBySlug(newRoot, newSub)
       catalogStore.setCategoryIds(categoryIds)
-      await catalogStore.loadAvailableFilters()
+      await catalogStore.loadAvailableFilters(filtersController.signal)
+      isInitialLoading = false
     }
 
     const normalizedQuery = normalizeQuery(
@@ -72,15 +91,18 @@ watch(
       .filter(color => colors.value.includes(color.id))
       .flatMap(color => color.colorIds)
 
-    await productStore.loadProducts({
-      categoryIds: catalogStore.categoryIds,
-      minPrice: minPrice.value,
-      maxPrice: maxPrice.value,
-      colors: colorIds,
-      sizes: sizes.value,
-      sort: sort.value,
-      page: page.value,
-    })
+    await productStore.loadProducts(
+      {
+        categoryIds: catalogStore.categoryIds,
+        minPrice: minPrice.value,
+        maxPrice: maxPrice.value,
+        colors: colorIds,
+        sizes: sizes.value,
+        sort: sort.value,
+        page: page.value,
+      },
+      productsController.signal,
+    )
   },
   { immediate: true },
 )

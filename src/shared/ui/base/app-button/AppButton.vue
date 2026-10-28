@@ -14,6 +14,10 @@ const props = defineProps({
     type: [Object, String],
     default: null,
   },
+  type: {
+    type: String,
+    default: 'button',
+  },
 })
 
 const tag = computed(() => {
@@ -21,7 +25,8 @@ const tag = computed(() => {
 })
 
 const buttonType = computed(() => {
-  return tag.value === 'button' ? 'button' : null
+  if (tag.value === 'router-link') return null
+  return props.type
 })
 </script>
 
@@ -59,54 +64,73 @@ const buttonType = computed(() => {
     pointer-events: none;
     opacity: 0.6;
   }
+}
 
-  &.router-link-exact-active {
-    cursor: default;
-    pointer-events: none;
+.app-button--solid {
+  &.app-button--purple {
     color: var(--color-white);
     background-color: var(--color-purple);
   }
-}
-
-.app-button--solid.app-button--purple {
-  color: var(--color-white);
-  background-color: var(--color-purple);
 
   &:disabled {
     color: var(--color-primary);
     background-color: var(--color-medium-gray);
   }
-}
 
-.app-button--solid.app-button--white {
-  color: var(--color-primary);
-  background-color: var(--color-white);
+  &.app-button--white {
+    color: var(--color-primary);
+    background-color: var(--color-white);
+  }
 }
 
 .app-button--outline {
   background-color: transparent;
-  border-color: var(--color-purple);
-  color: var(--color-purple);
   font-weight: var(--font-weight-medium);
+
+  &.app-button--purple {
+    border-color: var(--color-purple);
+    color: var(--color-purple);
+  }
 }
 
 .app-button--icon {
   width: 44px;
   height: 44px;
   padding: 0;
+  padding: 7px;
+  box-sizing: border-box;
 
-  @media (max-width: $breakpoint-tablet) {
-    box-sizing: border-box;
-    padding: 7px;
+  @media (min-width: $breakpoint-tablet) {
+    padding: 0;
+    box-sizing: content-box;
+  }
+
+  &.app-button--gray {
+    color: var(--color-secondary);
+    background-color: transparent;
+
+    @media (min-width: $breakpoint-tablet) {
+      background-color: var(--color-light-gray);
+
+      &.router-link-exact-active {
+        background-color: var(--color-purple);
+        color: var(--color-white);
+      }
+    }
+  }
+
+  @media (hover: hover) {
+    &:hover,
+    &:active {
+      background-color: var(--color-purple-opacity-10);
+      color: var(--color-purple);
+    }
   }
 }
-
-.app-button--icon.app-button--gray {
-  color: var(--color-secondary);
-  background-color: var(--color-light-gray);
-
-  @media (max-width: $breakpoint-tablet) {
-    background-color: transparent;
-  }
+.app-button.router-link-exact-active {
+  cursor: default;
+  pointer-events: none;
+  color: var(--color-white);
+  background-color: var(--color-purple);
 }
 </style>

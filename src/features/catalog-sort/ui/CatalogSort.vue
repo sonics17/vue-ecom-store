@@ -127,7 +127,7 @@ const selectOption = value => {
   cursor: pointer;
 
   &:hover {
-    background-color: color-mix(in srgb, var(--color-purple) 10%, transparent);
+    background-color: var(--color-purple-opacity-10);
   }
 }
 .catalog-sort__radio-button {

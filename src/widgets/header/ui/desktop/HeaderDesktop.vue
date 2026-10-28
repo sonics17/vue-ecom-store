@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import { useCategoryStore } from '@/entities/category/model/store'
 import logoUrl from '@/shared/assets/images/logo.svg'
-import { AppButton } from '@/shared/ui/base/app-button/index.js'
-import { AppContainer } from '@/shared/ui/base/app-container/index.js'
+import { AppButton } from '@/shared/ui/base/app-button'
+import { AppContainer } from '@/shared/ui/base/app-container'
 import { IconCart, IconUser, IconHeart } from '@/shared/ui/icons'
 import HeaderDropdown from './HeaderDropdown.vue'
 import { CategoryLink } from '@/entities/category'
@@ -20,39 +20,49 @@ const activeCategory = ref(null)
         <img :src="logoUrl" alt="Logo" />
       </RouterLink>
 
-      <nav v-if="!categoryStore.isLoading" class="header__nav">
-        <div
-          class="header__nav-item"
-          v-for="category in categoryStore.rootCategories"
-          :key="category.id"
-          @mouseenter="activeCategory = category.id"
-          @mouseleave="activeCategory = null"
-          @click="activeCategory = null"
-        >
-          <CategoryLink
-            :root-slug="category.slug"
-            color="secondary"
-            class="header__link"
-            :class="{ 'header__link--active': activeCategory === category.id }"
+      <nav class="header__nav">
+        <template v-if="!categoryStore.isLoading">
+          <div
+            class="header__nav-item"
+            v-for="category in categoryStore.rootCategories"
+            :key="category.id"
+            @mouseenter="activeCategory = category.id"
+            @mouseleave="activeCategory = null"
+            @click="activeCategory = null"
           >
-            {{ category.name }}
-          </CategoryLink>
+            <CategoryLink
+              :root-slug="category.slug"
+              color="secondary"
+              class="header__link"
+              :class="{
+                'header__link--active': activeCategory === category.id,
+              }"
+            >
+              {{ category.name }}
+            </CategoryLink>
 
-          <Transition name="dropdown">
-            <HeaderDropdown
-              v-if="activeCategory === category.id"
-              class="dropdown"
-              :sub-categories="category.subCategories"
-              :parent-slug="category.slug"
-              @close="activeCategory = null"
-            ></HeaderDropdown>
-          </Transition>
-        </div>
+            <Transition name="dropdown">
+              <HeaderDropdown
+                v-if="activeCategory === category.id"
+                class="dropdown"
+                :sub-categories="category.subCategories"
+                :parent-slug="category.slug"
+                @close="activeCategory = null"
+              ></HeaderDropdown>
+            </Transition>
+          </div>
+        </template>
+
+        <template v-else class="header__nav-skeleton"
+          ><span>skeleton</span></template
+        >
       </nav>
 
       <div class="header__actions">
         <AppButton variant="icon" color="gray"><IconHeart /></AppButton>
-        <AppButton variant="icon" color="gray"><IconUser /></AppButton>
+        <AppButton :to="{ name: 'account' }" variant="icon" color="gray"
+          ><IconUser
+        /></AppButton>
         <AppButton variant="icon" color="gray"><IconCart /></AppButton>
       </div>
     </AppContainer>

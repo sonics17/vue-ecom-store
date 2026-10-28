@@ -69,55 +69,63 @@ const model = defineModel()
   cursor: pointer;
   position: relative;
 
-  .size-selector__radio {
-    position: absolute;
-    width: 0;
-    height: 0;
-    margin: 0;
-    padding: 0;
-    appearance: none;
-  }
-
-  .size-selector__size-name {
-    display: flex;
-    height: 2rem;
-    width: 2rem;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--color-white);
-    border: 1px solid var(--color-medium-gray);
-    border-radius: 12px;
-  }
-  .size-selector__radio:checked + .size-selector__size-name {
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
-    color: var(--color-white);
-  }
-
   &--unavailable {
     cursor: default;
     pointer-events: none;
-
-    .size-selector__size-name {
-      opacity: 0.5;
-      position: relative;
-      overflow: hidden;
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          to top left,
-          transparent calc(50% - 1px),
-          var(--color-medium-gray),
-          transparent calc(50% + 1px)
-        );
-      }
-    }
   }
+}
+
+.size-selector__size--unavailable .size-selector__size-name {
+  opacity: 0.5;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to top left,
+      transparent calc(50% - 1px),
+      var(--color-medium-gray),
+      transparent calc(50% + 1px)
+    );
+  }
+}
+
+.size-selector__radio {
+  appearance: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  outline: none;
+}
+
+.size-selector__size-name {
+  display: flex;
+  height: 2rem;
+  width: 2rem;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-medium-gray);
+  border-radius: 12px;
+}
+
+.size-selector__radio:checked + .size-selector__size-name {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.size-selector__radio:focus-visible + .size-selector__size-name {
+  outline: auto -webkit-focus-ring-color;
 }
 </style>

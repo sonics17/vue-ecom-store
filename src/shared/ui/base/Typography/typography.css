@@ -60,3 +60,13 @@
   border-radius: 10px;
   flex-shrink: 0;
 }
+
+.typography--link {
+  text-decoration: underline;
+}
+
+@media (hover: hover) {
+  .typography--link:hover {
+    text-decoration: none;
+  }
+}

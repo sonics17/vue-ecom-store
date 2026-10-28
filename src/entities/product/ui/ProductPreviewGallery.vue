@@ -1,7 +1,7 @@
 <script setup>
 import defaultImageUrl from '@/shared/assets/images/placeholder.svg'
 import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const { isDesktop } = useDeviceBreakpoints()
 
@@ -20,26 +20,49 @@ const isDefaultImage = computed(() => {
   return !props.images || props.images.length === 0
 })
 
-const displayedImages = computed(() => {
-  if (isDefaultImage.value) return []
-  return props.images.slice(0, MAX_GALLERY_SIZE)
-})
+const displayedImages = ref([])
 
-const currentImage = computed(() => {
-  return isDefaultImage.value
-    ? defaultImageUrl
-    : displayedImages.value[currentIndex.value]
-})
+const handleImageError = index => {
+  displayedImages.value[index] = defaultImageUrl
+}
+
+watch(
+  () => props.images,
+  images => {
+    if (isDefaultImage.value) {
+      displayedImages.value = []
+    } else {
+      displayedImages.value = images.slice(0, MAX_GALLERY_SIZE)
+    }
+  },
+  { immediate: true, deep: true },
+)
 </script>
 
 <template>
   <div class="preview-gallery">
     <img
-      :src="currentImage"
-      alt="product image"
-      class="preview-gallery__image"
-      :class="{ 'default-image': isDefaultImage }"
+      v-if="isDefaultImage"
+      :src="defaultImageUrl"
+      placeholder="product default image"
+      class="preview-gallery__image preview-gallery__image--default"
     />
+
+    <template v-else>
+      <img
+        v-for="(image, index) in displayedImages"
+        :key="image"
+        :src="image"
+        alt="product image"
+        class="preview-gallery__image"
+        :class="{
+          'preview-gallery__image--active': index === currentIndex,
+          'preview-gallery__image--fallback': image === defaultImageUrl,
+        }"
+        loading="lazy"
+        @error="handleImageError(index)"
+      />
+    </template>
 
     <div
       v-if="isDesktop && displayedImages.length > 1"
@@ -74,13 +97,24 @@ const currentImage = computed(() => {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .preview-gallery__image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+  opacity: 0;
+  z-index: 1;
+}
+
+.preview-gallery__image--active {
+  opacity: 1;
+  z-index: 2;
 }
 
 .preview-gallery__zones {
@@ -93,10 +127,12 @@ const currentImage = computed(() => {
   display: flex;
 }
 
-.default-image {
-  width: 100%;
+.preview-gallery__image--fallback,
+.preview-gallery__image--default {
+  background-color: var(--color-light-gray);
   object-fit: contain;
   object-position: center;
+  opacity: 0.6;
 }
 
 .preview-gallery__dots {

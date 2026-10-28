@@ -2,6 +2,11 @@
 import { AppContainer } from '@/shared/ui/base/app-container'
 import logoUrl from '@/shared/assets/images/logo.svg'
 import { AppButton } from '@/shared/ui/base/app-button'
+import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
+import { useRoute } from 'vue-router'
+
+const { isMobile } = useDeviceBreakpoints()
+const route = useRoute()
 </script>
 
 <template>
@@ -13,12 +18,14 @@ import { AppButton } from '@/shared/ui/base/app-button'
 
       <div class="header__auth">
         <AppButton
+          v-if="!isMobile || (isMobile && route.name !== 'signIn')"
           :to="{ name: 'signIn' }"
           variant="outline"
           class="header__button"
           >Login</AppButton
         >
         <AppButton
+          v-if="!isMobile || (isMobile && route.name !== 'signUp')"
           :to="{ name: 'signUp' }"
           variant="outline"
           class="header__button"
@@ -61,9 +68,5 @@ import { AppButton } from '@/shared/ui/base/app-button'
 }
 .header__button {
   padding: 0.8rem 1rem;
-
-  @media (min-width: $breakpoint-mobile) {
-    padding: 1.2rem 1rem;
-  }
 }
 </style>

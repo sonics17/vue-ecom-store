@@ -5,6 +5,7 @@ import { categoriesApi } from '../api/categories-api'
 export const useCategoryStore = defineStore('categoryStore', () => {
   const allCategories = ref([])
   const isLoading = ref(true)
+  const isLoaded = ref(false)
 
   const rootCategories = computed(() => {
     return allCategories.value
@@ -65,14 +66,13 @@ export const useCategoryStore = defineStore('categoryStore', () => {
   }
 
   const loadCategories = async () => {
-    console.log('loadCategories beforre retuen')
-    if (allCategories.value.length > 0) return
-    console.log('loadCategories')
+    if (isLoaded.value) return
 
     isLoading.value = true
 
     try {
       allCategories.value = await categoriesApi.getCategories()
+      isLoaded.value = true
     } catch (err) {
       console.error('Error:', err)
     } finally {
@@ -84,6 +84,7 @@ export const useCategoryStore = defineStore('categoryStore', () => {
     allCategories,
     rootCategories,
     isLoading,
+    isLoaded,
     loadCategories,
     getCategoryIdsBySlug,
     getCurrentCategoryIdBySlug,

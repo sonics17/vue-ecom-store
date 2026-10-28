@@ -45,7 +45,7 @@ const isDropdownOpen = categoryId => {
           Categories
         </Typography>
 
-        <ul class="drawer-nav__root-list">
+        <ul v-if="!categoryStore.isLoading" class="drawer-nav__root-list">
           <li
             v-for="rootCategory in categoryStore.rootCategories"
             :key="rootCategory.id"
@@ -95,6 +95,10 @@ const isDropdownOpen = categoryId => {
               </ul>
             </Transition>
           </li>
+        </ul>
+
+        <ul v-else class="drawer-nav__root-list drawer-nav__skeleton-list">
+          skeleton
         </ul>
       </nav>
 

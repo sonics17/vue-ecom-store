@@ -26,25 +26,29 @@ const onChange = (id, checked) => {
 
 <template>
   <FilterCollapsible title="Color">
-    <div class="colors-filter__grid">
+    <div class="color-filter__grid">
       <label
         class="color-filter__item"
         v-for="color in props.availableColors"
         :key="color.id"
       >
         <input
-          class="color-filter__color"
           type="checkbox"
+          class="color-filter__checkbox"
+          :checked="colors.includes(color.id)"
+          @change="onChange(color.id, $event.target.checked)"
+        />
+        <span
           :style="{
             background:
               color.hex === 'multicolor'
                 ? 'linear-gradient(45deg in hsl longer hue, hsl(0, 45%, 65%) 0%, hsl(360, 45%, 65%) 100%)'
                 : `#${color.hex}`,
-            border: color.hex === 'ffffff' ? '2px solid #F4F1F1' : 'none',
+            border:
+              color.hex === 'ffffff' ? '2px solid #F4F1F1' : 'transparent',
           }"
-          :checked="colors.includes(color.id)"
-          @change="onChange(color.id, $event.target.checked)"
-        />
+          class="color-filter__custom-checkbox"
+        ></span>
         <Typography
           class="color-filter__name"
           color="secondary"
@@ -58,7 +62,7 @@ const onChange = (id, checked) => {
 </template>
 
 <style lang="scss" scoped>
-.colors-filter__grid {
+.color-filter__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
   gap: 20px 15px;
@@ -74,18 +78,32 @@ const onChange = (id, checked) => {
   padding: 7px 5px;
   border-radius: 8px;
 
-  &:has(.color-filter__color:checked) {
-    outline: 2px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
+  &:has(.color-filter__checkbox:checked) {
+    outline: 2px solid var(--color-purple-opacity-50);
+  }
+
+  &:has(.color-filter__checkbox:focus-visible) {
+    outline: auto -webkit-focus-ring-color;
   }
 }
 
-.color-filter__color {
+.color-filter__checkbox {
   appearance: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  outline: none;
+}
+
+.color-filter__custom-checkbox {
   width: 36px;
   height: 36px;
-  cursor: pointer;
-  margin: 0;
   border-radius: 12px;
+  border: 2px solid transparent;
   box-sizing: border-box;
 }
 </style>

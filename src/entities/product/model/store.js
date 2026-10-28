@@ -17,19 +17,35 @@ export const useProductStore = defineStore('productStore', () => {
   const isLoadingDetails = ref(true)
   const isLoadingVariants = ref(true)
 
-  const loadProducts = async params => {
+  // const productsController = ref(null)
+
+  const loadProducts = async (params, signal) => {
+    // if (productsController.value) {
+    //   productsController.value.abort()
+    // }
+
+    // productsController.value = new AbortController()
+    // const timeoutSignal = AbortSignal.timeout(1000)
+    // const controllerSignal = productsController.value.signal
+    // const signal = AbortSignal.any([controllerSignal])
+
     isLoadingCatalog.value = true
 
     try {
-      const result = await productsApi.getCatalogProducts(params)
+      const result = await productsApi.getCatalogProducts(params, signal)
       products.value = adaptProducts(result.products)
-      console.log(products.value)
       totalCount.value = result.totalCount
       isOutOfRange.value = result.isOutOfRange
     } catch (err) {
       console.error('Error:', err)
     } finally {
-      isLoadingCatalog.value = false
+      if (!signal?.aborted) {
+        isLoadingCatalog.value = false
+      }
+      // if (productsController.value?.signal === controllerSignal) {
+      //   productsController.value = null
+      //   isLoadingCatalog.value = false
+      // }
     }
   }
 

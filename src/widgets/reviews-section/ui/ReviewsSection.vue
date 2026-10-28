@@ -6,8 +6,10 @@ import 'swiper/css/pagination'
 import { Typography } from '@/shared/ui/base/typography'
 import { reviews } from '../data/reviews'
 import ReviewCard from './ReviewCard.vue'
+import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
 
 const modules = [Pagination]
+const { isDesktop, isTablet } = useDeviceBreakpoints()
 </script>
 
 <template>
@@ -22,8 +24,8 @@ const modules = [Pagination]
     >
     <swiper
       :modules="modules"
-      :slides-per-view="3"
-      :slides-per-group="3"
+      :slides-per-view="isDesktop ? 3 : isTablet ? 2 : 1"
+      :slides-per-group="isDesktop ? 3 : isTablet ? 2 : 1"
       :space-between="24"
       :pagination="{ clickable: true }"
       class="reviews-section__items"

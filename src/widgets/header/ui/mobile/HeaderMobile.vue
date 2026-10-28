@@ -1,13 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import { AppButton } from '@/shared/ui/base/app-button'
-import { IconHeart, IconUser, IconCart, IconSearch } from '@/shared/ui/icons'
+import { IconHeart, IconUser, IconCart } from '@/shared/ui/icons'
 import { AppContainer } from '@/shared/ui/base/app-container'
 import logoUrl from '@/shared/assets/images/logo.svg'
-import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
 import MobileMenuDrawer from './MobileMenuDrawer.vue'
-
-const { isMobile } = useDeviceBreakpoints()
 
 const isOpen = ref(false)
 
@@ -25,7 +22,7 @@ const openMenu = () => {
 
       <div class="header__actions">
         <AppButton variant="icon" color="gray"><IconHeart /></AppButton>
-        <AppButton v-if="!isMobile" variant="icon" color="gray"
+        <AppButton :to="{ name: 'account' }" variant="icon" color="gray"
           ><IconUser
         /></AppButton>
         <AppButton variant="icon" color="gray"><IconCart /></AppButton>

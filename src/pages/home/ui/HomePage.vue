@@ -32,6 +32,7 @@ const categoriesSections = computed(() => {
       :items="categorySection.items"
       :key="categorySection.slug"
       :root-slug="categorySection.slug"
+      :is-loading="categoryStore.isLoading"
       class="categories-section"
     ></CategoriesSection>
     <ReviewsSection class="reviews-section"></ReviewsSection>

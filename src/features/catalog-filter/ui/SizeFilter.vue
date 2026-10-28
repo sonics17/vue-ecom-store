@@ -30,11 +30,13 @@ const onChange = (id, checked) => {
       <label class="size-filter__item" v-for="size in availableSizes">
         <input
           type="checkbox"
-          class="size-filter__size"
+          class="size-filter__checkbox"
           :checked="sizes.includes(size.id)"
           @change="onChange(size.id, $event.target.checked)"
         />
-        <Typography size="xs" weight="semi-bold">{{ size.name }}</Typography>
+        <Typography size="xs" weight="semi-bold" class="size-filter__name">{{
+          size.name
+        }}</Typography>
       </label>
     </div>
   </FilterCollapsible>
@@ -46,27 +48,13 @@ const onChange = (id, checked) => {
   grid-template-columns: repeat(3, minmax(60px, 1fr));
   gap: 15px 20px;
 }
+
 .size-filter__item {
   position: relative;
-  min-height: 30px;
-  padding: 7px 18px;
-  box-sizing: border-box;
-  border: 1px solid var(--color-medium-gray);
-  text-align: center;
-  border-radius: 8px;
   cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:has(.size-filter__size:checked) {
-    border-color: transparent;
-    outline: 2px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
-  }
 }
 
-.size-filter__size {
+.size-filter__checkbox {
   appearance: none;
   position: absolute;
   width: 1px;
@@ -75,5 +63,28 @@ const onChange = (id, checked) => {
   padding: 0;
   overflow: hidden;
   border: 0;
+  outline: none;
+}
+
+.size-filter__name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 7px 18px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-medium-gray);
+  text-align: center;
+  border-radius: 8px;
+  background-color: var(--color-white);
+}
+
+.size-filter__checkbox:checked + .size-filter__name {
+  border-color: transparent;
+  outline: 2px solid var(--color-purple-opacity-50);
+}
+
+.size-filter__checkbox:focus-visible + .size-filter__name {
+  outline: auto -webkit-focus-ring-color;
 }
 </style>

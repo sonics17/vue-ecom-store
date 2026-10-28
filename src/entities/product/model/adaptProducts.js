@@ -1,5 +1,4 @@
 export const adaptProducts = rawProducts => {
-  console.log(rawProducts)
   return rawProducts.map(product => {
     return {
       id: product.id,

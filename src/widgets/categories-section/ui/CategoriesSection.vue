@@ -7,6 +7,7 @@ defineProps({
   title: String,
   items: Array,
   rootSlug: String,
+  isLoading: Boolean,
 })
 </script>
 
@@ -23,6 +24,7 @@ defineProps({
       >
 
       <RouterLink
+        v-if="!isLoading"
         :to="{ name: 'catalog', params: { rootCategory: rootSlug } }"
         class="category-section__link"
       >
@@ -38,15 +40,20 @@ defineProps({
     </div>
 
     <div class="category-section__items">
-      <CategoryCard
-        v-for="item in items"
-        :key="item.id"
-        :name="item.name"
-        :slug="item.slug"
-        :image-url="item.imageUrl"
-        :parent-slug="item.parentSlug"
-      >
-      </CategoryCard>
+      <template v-if="!isLoading">
+        <CategoryCard
+          v-for="item in items"
+          :key="item.id"
+          :name="item.name"
+          :slug="item.slug"
+          :image-url="item.imageUrl"
+          :parent-slug="item.parentSlug"
+        >
+        </CategoryCard>
+      </template>
+      <template v-else>
+        <span>skeleton</span>
+      </template>
     </div>
   </section>
 </template>

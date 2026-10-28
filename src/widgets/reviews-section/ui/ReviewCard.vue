@@ -1,6 +1,8 @@
 <script setup>
 import { Typography } from '@/shared/ui/base/typography/index.js'
 import StarRating from './StarRating.vue'
+import { IconUser } from '@/shared/ui/icons'
+import { ref } from 'vue'
 
 defineProps({
   userName: String,
@@ -8,13 +10,25 @@ defineProps({
   rating: Number,
   imageUrl: String,
 })
+
+const isDefaultImage = ref(false)
+
+const handleImageError = () => {
+  isDefaultImage.value = true
+}
 </script>
 
 <template>
   <div class="review-card">
     <div class="review-card__top">
       <div class="review-card__image">
-        <img :src="imageUrl" alt="" />
+        <img
+          v-if="imageUrl && !isDefaultImage"
+          :src="imageUrl"
+          alt="user avatar"
+          @error="handleImageError"
+        />
+        <IconUser v-else class="review-card__image--default"></IconUser>
       </div>
       <StarRating :rating="rating"></StarRating>
     </div>
@@ -56,10 +70,18 @@ defineProps({
   width: 58px;
   height: 58px;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .review-card__image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.review-card__image--default {
+  height: 80%;
+  width: auto;
+  color: var(--color-secondary);
 }
 </style>
