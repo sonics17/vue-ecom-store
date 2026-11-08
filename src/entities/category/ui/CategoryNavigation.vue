@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { CategoryLink } from '..'
-import { useCategoryStore } from '../model/store'
+import { useCategoryStore } from '../model/categoryStore'
 import { ChevronToggle } from '@/shared/ui/base/chevron-toggle'
 
 const props = defineProps({

@@ -2,10 +2,11 @@
 import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { useProductStore } from '@/entities/product/model/store'
-import { ProductGallery } from '@/entities/product'
+import { useProductStore } from '@/entities/product'
 import { AppContainer } from '@/shared/ui/base/app-container'
-import { ProductDescription, ProductMainInfo } from '@/widgets/product-details'
+import ProductMainInfo from './ProductMainInfo.vue'
+import ProductDescription from './ProductDescription.vue'
+import ProductGallery from './ProductGallery.vue'
 
 const route = useRoute()
 

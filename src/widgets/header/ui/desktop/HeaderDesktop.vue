@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { useCategoryStore } from '@/entities/category/model/store'
+import { useCategoryStore } from '@/entities/category'
 import logoUrl from '@/shared/assets/images/logo.svg'
 import { AppButton } from '@/shared/ui/base/app-button'
 import { AppContainer } from '@/shared/ui/base/app-container'

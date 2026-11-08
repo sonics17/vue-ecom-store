@@ -1,21 +1,21 @@
 <script setup>
-import { useCategoryStore } from '@/entities/category/model/store'
-import { useProductStore } from '@/entities/product/model/store'
+import { useCategoryStore } from '@/entities/category'
+import { useProductStore } from '@/entities/product'
 import { AppContainer } from '@/shared/ui/base/app-container'
-import { computed, onWatcherCleanup, ref, watch } from 'vue'
+import { computed, onWatcherCleanup, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ProductCatalog } from '@/widgets/product-catalog'
 import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
-import { useCatalogStore } from '../model/store'
+import { useCatalogStore } from '../model/catalogStore'
 import { useCatalogQuery } from '../model/useCatalogQuery'
-import CatalogFiltersForm from './CatalogFiltersForm.vue'
 import CatalogFiltersDrawer from './CatalogFiltersDrawer.vue'
-import { CatalogSort } from '@/features/catalog-sort'
 import { IconFilter } from '@/shared/ui/icons'
 import { Typography } from '@/shared/ui/base/typography'
 import { Pagination } from '@/shared/ui/base/pagination'
-import { LIMIT } from '@/entities/product/api/products-api'
+import { LIMIT } from '@/entities/product'
 import { AppButton } from '@/shared/ui/base/app-button'
+import CatalogFiltersPanel from './CatalogFiltersPanel.vue'
+import CatalogProducts from './CatalogProducts.vue'
+import CatalogSort from './CatalogSort.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -45,37 +45,47 @@ const onPageUpdate = page => {
   window.scrollTo({ top: 0 })
 }
 
-let isInitialLoading = true
+watch(
+  [
+    () => route.params.rootCategory,
+    () => route.params.subCategory,
+    () => categoryStore.isLoaded,
+  ],
+  async ([newRoot, newSub, categoriesReady]) => {
+    if (!categoriesReady) return
+
+    const currentFiltersKey = `${newRoot}/${newSub}`
+
+    const categoryIds = categoryStore.getCategoryIdsBySlug(newRoot, newSub)
+
+    if (catalogStore.availableFiltersKey === currentFiltersKey) return
+
+    const controller = new AbortController()
+    onWatcherCleanup(() => controller.abort())
+
+    await catalogStore.loadAvailableFilters(
+      categoryIds,
+      currentFiltersKey,
+      controller.signal,
+    )
+  },
+  { immediate: true },
+)
 
 watch(
   [
     () => route.params.rootCategory,
     () => route.params.subCategory,
     () => route.query,
-    () => categoryStore.isLoaded,
+    () => catalogStore.availableFiltersKey,
   ],
-  async ([newRoot, newSub, newQuery, categoriesReady], [oldRoot, oldSub]) => {
-    if (!categoriesReady) return
+  async ([newRoot, newSub, newQuery, filtersKey]) => {
+    const currentFiltersKey = `${newRoot}/${newSub}`
 
-    const filtersController = new AbortController()
-    onWatcherCleanup(() => {
-      filtersController.abort()
-    })
+    if (!categoryStore.isLoaded || filtersKey !== currentFiltersKey) return
 
-    const productsController = new AbortController()
-    onWatcherCleanup(() => {
-      productsController.abort()
-    })
-
-    const isCategoryChanged =
-      isInitialLoading || newRoot !== oldRoot || newSub !== oldSub
-
-    if (isCategoryChanged) {
-      const categoryIds = categoryStore.getCategoryIdsBySlug(newRoot, newSub)
-      catalogStore.setCategoryIds(categoryIds)
-      await catalogStore.loadAvailableFilters(filtersController.signal)
-      isInitialLoading = false
-    }
+    const controller = new AbortController()
+    onWatcherCleanup(() => controller.abort())
 
     const normalizedQuery = normalizeQuery(
       newQuery,
@@ -87,13 +97,15 @@ watch(
       return
     }
 
+    const categoryIds = categoryStore.getCategoryIdsBySlug(newRoot, newSub)
+
     const colorIds = catalogStore.availableFilters.colors
       .filter(color => colors.value.includes(color.id))
       .flatMap(color => color.colorIds)
 
     await productStore.loadProducts(
       {
-        categoryIds: catalogStore.categoryIds,
+        categoryIds: categoryIds,
         minPrice: minPrice.value,
         maxPrice: maxPrice.value,
         colors: colorIds,
@@ -101,7 +113,7 @@ watch(
         sort: sort.value,
         page: page.value,
       },
-      productsController.signal,
+      controller.signal,
     )
   },
   { immediate: true },
@@ -118,7 +130,7 @@ watch(
           >
           <IconFilter class="catalog-page__sidebar-icon"></IconFilter>
         </div>
-        <CatalogFiltersForm class="catalog-page__filters-form" />
+        <CatalogFiltersPanel class="catalog-page__filters-form" />
       </aside>
 
       <div class="catalog-page__main">
@@ -138,10 +150,10 @@ watch(
           Loading products...
         </div>
 
-        <ProductCatalog
+        <CatalogProducts
           v-else-if="productStore.products.length > 0"
           class="catalog-page__products"
-        ></ProductCatalog>
+        ></CatalogProducts>
 
         <div
           class="catalog-page__message"

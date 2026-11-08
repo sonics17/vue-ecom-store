@@ -3,8 +3,18 @@ import { createPinia } from 'pinia'
 import { router } from './router'
 import App from './App.vue'
 import './styles'
+import { useAuthStore } from '@/shared/auth'
 
-const application = createApp(App).use(router).use(createPinia())
+const application = createApp(App)
+
+const pinia = createPinia()
+
+application.use(pinia)
+
+const authStore = useAuthStore()
+authStore.initializeAuth()
+
+application.use(router)
 
 router.isReady().then(() => {
   application.mount('#app')

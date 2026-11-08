@@ -1,6 +1,6 @@
 <script setup>
 import { CategoryLink } from '@/entities/category'
-import { useCategoryStore } from '@/entities/category/model/store'
+import { useCategoryStore } from '@/entities/category'
 import { AppDrawer } from '@/shared/ui/base/app-drawer'
 import { ChevronToggle } from '@/shared/ui/base/chevron-toggle'
 import { Typography } from '@/shared/ui/base/typography'

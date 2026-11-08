@@ -3,10 +3,10 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
-import { Typography } from '@/shared/ui/base/typography'
-import { reviews } from '../data/reviews'
-import ReviewCard from './ReviewCard.vue'
 import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
+import { Typography } from '@/shared/ui/base/typography'
+import { reviews } from '../config/reviews'
+import ReviewCard from './ReviewCard.vue'
 
 const modules = [Pagination]
 const { isDesktop, isTablet } = useDeviceBreakpoints()

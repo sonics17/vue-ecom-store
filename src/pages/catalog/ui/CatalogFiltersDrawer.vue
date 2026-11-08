@@ -2,9 +2,9 @@
 import { AppButton } from '@/shared/ui/base/app-button'
 import { ref, watch } from 'vue'
 import { AppDrawer } from '@/shared/ui/base/app-drawer'
-import CatalogFiltersForm from './CatalogFiltersForm.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { IconFilter } from '@/shared/ui/icons'
+import CatalogFiltersPanel from './CatalogFiltersPanel.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -47,7 +47,7 @@ watch(isOpen, newValue => {
 
     <AppDrawer v-model:is-open="isOpen" class="catalog-drawer__drawer">
       <div class="catalog-drawer__drawer-wrapper">
-        <CatalogFiltersForm class="catalog-drawer__form" />
+        <CatalogFiltersPanel class="catalog-drawer__form" />
         <AppButton
           variant="solid"
           color="purple"

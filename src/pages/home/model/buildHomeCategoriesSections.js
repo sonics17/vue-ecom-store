@@ -1,10 +1,13 @@
 export function buildHomeCategoriesSections(sections, categories) {
+  if (!categories.length) return
+
   return sections.map(section => {
     const parent = categories.find(category => category.slug === section.slug)
     if (!parent) {
       return {
         title: section.title,
         items: [],
+        slug: section.slug,
       }
     }
 

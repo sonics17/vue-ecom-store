@@ -1,8 +1,8 @@
 <script setup>
-import { Typography } from '@/shared/ui/base/typography/index.js'
+import { ref } from 'vue'
+import { Typography } from '@/shared/ui/base/typography'
 import StarRating from './StarRating.vue'
 import { IconUser } from '@/shared/ui/icons'
-import { ref } from 'vue'
 
 defineProps({
   userName: String,

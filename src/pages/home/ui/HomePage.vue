@@ -1,14 +1,15 @@
 <script setup>
 import { computed } from 'vue'
-import { useCategoryStore } from '@/entities/category/model/store'
-import { AppContainer } from '@/shared/ui/base/app-container'
-import { PromoBanner, PromoSection } from '@/shared/ui/promo'
-import { BannerSlider } from '@/widgets/banner-slider'
-import { CategoriesSection } from '@/widgets/categories-section'
-import { homePageCategoriesSections } from '../model/homePageCategoriesSections'
-import { buildHomeCategoriesSections } from '../model/buildHomeCategoriesSections'
-import { ReviewsSection } from '@/widgets/reviews-section'
 import { useDeviceBreakpoints } from '@/shared/lib/composables/useDeviceBreakpoints'
+import { useCategoryStore } from '@/entities/category'
+import { homeCategoriesSections } from '../config/homeCategoriesSections'
+import { buildHomeCategoriesSections } from '../model/buildHomeCategoriesSections'
+import { AppContainer } from '@/shared/ui/base/app-container'
+import BannerSlider from './BannerSlider.vue'
+import PromoSection from './PromoSection.vue'
+import PromoBanner from './PromoBanner.vue'
+import { CategoriesSection } from '@/widgets/categories-section'
+import { ReviewsSection } from '@/widgets/reviews-section'
 
 const { isDesktop } = useDeviceBreakpoints()
 
@@ -16,7 +17,7 @@ const categoryStore = useCategoryStore()
 
 const categoriesSections = computed(() => {
   return buildHomeCategoriesSections(
-    homePageCategoriesSections,
+    homeCategoriesSections,
     categoryStore.allCategories,
   )
 })
@@ -38,6 +39,7 @@ const categoriesSections = computed(() => {
     <ReviewsSection class="reviews-section"></ReviewsSection>
   </AppContainer>
 </template>
+
 <style lang="scss" scoped>
 @use '@/shared/styles/_variables.scss' as *;
 

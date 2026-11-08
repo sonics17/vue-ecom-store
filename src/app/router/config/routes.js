@@ -1,3 +1,10 @@
+import {
+  SignInPage,
+  SignUpPage,
+  ForgotPasswordPage,
+  UpdatePasswordPage,
+} from '@/pages/auth'
+
 export default [
   {
     path: '/',
@@ -20,31 +27,31 @@ export default [
   {
     path: '/sign-in',
     name: 'signIn',
-    component: () => import('@/pages/sign-in'),
+    component: SignInPage,
     meta: { layout: 'AuthLayout' },
   },
   {
     path: '/sign-up',
     name: 'signUp',
-    component: () => import('@/pages/sign-up'),
+    component: SignUpPage,
     meta: { layout: 'AuthLayout' },
   },
   {
     path: '/forgot-password',
     name: 'forgotPassword',
-    component: () => import('@/pages/forgot-password'),
+    component: ForgotPasswordPage,
     meta: { layout: 'AuthLayout' },
   },
   {
     path: '/update-password',
     name: 'updatePassword',
-    component: () => import('@/pages/update-password'),
+    component: UpdatePasswordPage,
     meta: { layout: 'AuthLayout' },
   },
   {
     path: '/account',
     name: 'account',
     component: () => import('@/pages/account'),
-    meta: { layout: 'MainLayout' },
+    meta: { layout: 'MainLayout', requiresAuth: true },
   },
 ]

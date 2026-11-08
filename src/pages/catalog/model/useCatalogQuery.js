@@ -1,9 +1,6 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import {
-  DEFAULT_SORT_OPTION,
-  VALID_SORT_VALUES,
-} from '@/features/catalog-sort/model/constants'
+import { DEFAULT_SORT_OPTION, VALID_SORT_VALUES } from '../config/sortOptions'
 
 export const useCatalogQuery = () => {
   const route = useRoute()
@@ -220,7 +217,7 @@ export const useCatalogQuery = () => {
 
     let queryPage = normalizedQuery.page
 
-    if (!Number.isFinite(Number(queryPage)) || Number(queryPage <= 1)) {
+    if (!Number.isFinite(Number(queryPage)) || Number(queryPage) <= 1) {
       delete normalizedQuery.page
     }
 

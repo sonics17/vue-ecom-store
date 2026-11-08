@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted } from 'vue'
-import { useCategoryStore } from '@/entities/category/model/store'
+import { useCategoryStore } from '@/entities/category'
 import { Header } from '@/widgets/header'
-import Footer from '@/widgets/footer/ui/Footer.vue'
+import { Footer } from '@/widgets/footer'
 
 const categoryStore = useCategoryStore()
 

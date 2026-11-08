@@ -112,8 +112,5 @@ const handleImageError = () => {
   .category-card__text {
     color: var(--color-primary);
   }
-  .category-card__image--default {
-    transform: scale(1.1);
-  }
 }
 </style>
