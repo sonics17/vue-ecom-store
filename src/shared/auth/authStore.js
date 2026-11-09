@@ -7,14 +7,19 @@ export const useAuthStore = defineStore('authStore', () => {
   const isInitialized = ref(false)
 
   const initializeAuth = () => {
-    if (isInitialized.value) return
+    return new Promise(resolve => {
+      authApi.subscribeToAuthChange((event, session) => {
+        isAuthenticated.value = Boolean(session)
+        console.log('isAuthenticated', isAuthenticated.value)
 
-    const { data } = authApi.subscribeToAuthChange((event, session) => {
-      isAuthenticated.value = Boolean(session)
+        if (event === 'INITIAL_SESSION') {
+          isInitialized.value = true
+          resolve()
+        }
 
-      if (event === 'INITIAL_SESSION') {
-        isInitialized.value = true
-      }
+        if (event === 'SIGNED_OUT') {
+        }
+      })
     })
   }
 

@@ -7,17 +7,14 @@ export const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   const authStore = useAuthStore()
 
-  if (!to.meta.requiresAuth) return
+  if (!authStore.isInitialized) {
+    await authStore.initializeAuth()
+  }
 
-  console.log(authStore.isAuthenticated)
-  if (
-    to.meta.requiresAuth &&
-    authStore.isInitialized &&
-    !authStore.isAuthenticated
-  ) {
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     return { name: 'signIn' }
   }
 })

@@ -10,6 +10,10 @@ export const validateEmail = email => {
 }
 
 export const validatePasswordComplexity = password => {
-  if (password.trim().length >= 8 && /\d/.test(password)) return null
-  return 'Must be 8+ characters and has at least 1 number'
+  if (
+    password.trim().length >= 8 &&
+    /^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(password)
+  )
+    return null
+  return 'Must be 8 or more characters and contain both letters and numbers'
 }

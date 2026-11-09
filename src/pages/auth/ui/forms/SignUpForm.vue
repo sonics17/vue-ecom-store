@@ -59,11 +59,11 @@ const validateForm = () => {
 const handleSubmit = async () => {
   if (!validateForm()) return
 
-  try {
-    isSubmitting.value = true
+  isSubmitting.value = true
 
+  try {
     const { email, password } = formData
-    const data = await authApi.signUp({ email, password })
+    await authApi.signUp({ email, password })
     emit('success')
   } catch (error) {
     console.error(error)

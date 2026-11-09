@@ -4,6 +4,7 @@ import { AppButton } from '@/shared/ui/base/app-button'
 import { AppInput } from '@/shared/ui/base/app-input'
 import { AppErrorMessage } from '@/shared/ui/base/app-error-message'
 import { validateEmail, validateRequired } from '@/shared/lib/validation'
+import { authApi } from '@/shared/auth/authApi'
 
 const email = ref('')
 const errors = reactive({ email: null, general: null })
@@ -24,8 +25,24 @@ const validateForm = () => {
   return true
 }
 
-const handleSubmit = () => {
+const isSubmitting = ref(false)
+
+const handleSubmit = async () => {
   if (!validateForm()) return
+
+  isSubmitting.value = true
+
+  try {
+    await authApi.resetPasswordWithEmail(
+      email.value,
+      `${window.location.origin}/update-password`,
+    )
+  } catch (error) {
+    console.log(error)
+    errors.general = 'Something went wrong, try again'
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
 

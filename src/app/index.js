@@ -11,9 +11,6 @@ const pinia = createPinia()
 
 application.use(pinia)
 
-const authStore = useAuthStore()
-authStore.initializeAuth()
-
 application.use(router)
 
 router.isReady().then(() => {

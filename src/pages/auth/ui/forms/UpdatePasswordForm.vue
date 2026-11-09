@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue'
+import { ref, reactive } from 'vue'
 import {
   validatePasswordComplexity,
   validateRequired,
@@ -7,6 +7,7 @@ import {
 import { AppButton } from '@/shared/ui/base/app-button'
 import { AppErrorMessage } from '@/shared/ui/base/app-error-message'
 import { AppInput } from '@/shared/ui/base/app-input'
+import { authApi } from '@/shared/auth/authApi'
 
 const formData = reactive({ newPassword: '', confirmPassword: '' })
 const errors = reactive({
@@ -45,8 +46,21 @@ const validateForm = () => {
   return true
 }
 
-const handleSubmit = () => {
+const isSubmitting = ref(false)
+
+const handleSubmit = async () => {
   if (!validateForm()) return
+
+  isSubmitting.value = true
+
+  try {
+    await authApi.updateUserPassword(formData.newPassword)
+  } catch (error) {
+    console.log(error)
+    errors.general = 'Something went wrong, try again'
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
 

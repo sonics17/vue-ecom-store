@@ -1,9 +1,10 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { AppButton } from '@/shared/ui/base/app-button'
 import { AppInput } from '@/shared/ui/base/app-input'
 import { validateEmail, validateRequired } from '@/shared/lib/validation'
 import { AppErrorMessage } from '@/shared/ui/base/app-error-message'
+import { authApi } from '@/shared/auth/authApi'
 
 const formData = reactive({ email: '', password: '' })
 const errors = reactive({ email: null, password: null, general: null })
@@ -32,8 +33,21 @@ const validateForm = () => {
   return true
 }
 
-const handleSubmit = () => {
+const isSubmitting = ref(false)
+
+const handleSubmit = async () => {
   if (!validateForm()) return
+
+  isSubmitting.value = true
+
+  try {
+    await authApi.signInWithPassword(formData)
+  } catch (error) {
+    console.log(error)
+    errors.general = 'Something went wrong, try again'
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
 
